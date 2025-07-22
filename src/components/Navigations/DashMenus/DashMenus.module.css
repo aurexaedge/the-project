@@ -1,0 +1,27 @@
+.card_container {
+  max-width: 400px;
+  margin-top: 30px;
+}
+.card_wrapper {
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.card_wrapper:hover {
+  background-color: #f0f0f0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

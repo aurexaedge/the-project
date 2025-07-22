@@ -1,0 +1,26 @@
+.news_wrapper {
+  /* margin-right: auto; */
+  margin: 0 auto;
+  font-size: 13px;
+  background-color: rgb(243, 243, 87);
+  padding: 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.news_wrapper .icon {
+  color: red;
+  display: inline-block; /* Makes sure the icon is treated as an inline element */
+  animation: moveUpDown 1.5s ease-in-out infinite; /* Animation properties */
+}
+
+@keyframes moveUpDown {
+  0%,
+  100% {
+    transform: translateY(0); /* Initial position */
+  }
+  50% {
+    transform: translateY(-5px); /* Moves the icon up by 5px */
+  }
+}

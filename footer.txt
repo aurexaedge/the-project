@@ -1,0 +1,43 @@
+
+import React from 'react';
+import styles from './Footer.module.css';
+import Image from 'next/image';
+// import dataLogo from '../../assets/datafarm.png';
+
+import { AiTwotoneHeart } from 'react-icons/ai';
+import { CiFacebook } from 'react-icons/ci';
+import { AiOutlineInstagram } from 'react-icons/ai';
+import { FiTwitter } from 'react-icons/fi';
+import { AiOutlineLinkedin } from 'react-icons/ai';
+import LogoItem from '../../LogoItem/LogoItem';
+
+const Footer = () => {
+  return (
+    <div>
+      <div className={styles.footer_container}>
+        <LogoItem background={true} />
+        <p>
+          aurexaedge specializes in offering professional and reliable
+          verification services for National Identification Number (NIN). Our
+          dedicated team ensures accurate and efficient verification processes,
+          helping individuals and businesses get secure and seamless
+          verification solutions.
+        </p>
+        <div className={styles.social_icons}>
+          <CiFacebook className={styles.social_items} />
+          <AiOutlineInstagram className={styles.social_items} />
+          <FiTwitter className={styles.social_items} />
+          <AiOutlineLinkedin className={styles.social_items} />
+        </div>
+        <div className={styles.footer_menuIcons}>
+          <button className={styles.menu_items}>Home</button>
+          <button className={styles.menu_items}>Services</button>
+          <button className={styles.menu_items}>Reach Us</button>
+          <button className={styles.menu_items}>About us</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Footer;

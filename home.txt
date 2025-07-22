@@ -1,0 +1,76 @@
+'use client';
+import styles from './page.module.css';
+
+import Image from 'next/image';
+import Lottie from 'lottie-react';
+import animationData from './hand_scrolls_the_messages_on_the_phone.json';
+
+import Typewriter from 'typewriter-effect';
+import Link from 'next/link';
+
+export default function HomeScreen() {
+  return (
+    <div className={styles.container}>
+      {/* Hero section  */}
+      <div className={styles.hero_section}>
+        <div className={styles.inner_a}>
+          <h1>
+            aurexaedge: Expert Verification Services for NIN You Can Trust.
+          </h1>
+          {/* <p>Pay less and get more on data.</p> */}
+          <div className={styles.type_writter}>
+            <Typewriter
+              options={{
+                autoStart: true,
+                loop: true,
+                delay: 50,
+                typeSpeed: 200,
+                strings: [
+                  'Verify your identity and secure your personal data.',
+                  'Verify your identity and enhance your trustworthiness.',
+                  'Verify your identity and streamline your transactions.',
+                ],
+              }}
+            />
+          </div>
+          {/* <p>
+            Pay less and get more on data, Cheap and affordable don't miss out.
+          </p> */}
+          <Link href='/auth/register'>
+            <button className={styles.btn_hero}>Create a Free Account</button>
+          </Link>
+        </div>
+        <div className={styles.inner_b}>
+          <Image
+            style={{ objectFit: 'cover' }}
+            src='/hero_img.png'
+            alt='foo_img'
+            fill
+            sizes='(max-width:768px) 100vw 700px'
+          />
+        </div>
+      </div>
+
+      {/* Section A  */}
+      <div className={styles.ourWord_container}>
+        <h3>Trust in Our Commitment!</h3>
+        <p>
+          Explore a realm of infinite possibilities, where our services are
+          tailored to surpass your expectations
+        </p>
+        <div id='services' className={styles.list_of_offers}>
+          <div className={styles.the_offers}>
+            <h3>NIN Verification</h3>
+            <h3>NIN Validation</h3>
+            <h3>In Processing Error (IPE) Clearance</h3>
+            <h3>NIN Enrollment and Modification</h3>
+            <h3>NIN Premium and Standard Prints</h3>
+          </div>
+          <div className={styles.list_animation}>
+            <Lottie animationData={animationData} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

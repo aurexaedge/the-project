@@ -1,0 +1,147 @@
+.standardBackground1Icon {
+  position: absolute;
+  top: calc(50% - 107.34px);
+  left: calc(50% - 167.61px);
+  width: 336.6px;
+  height: 213.3px;
+  object-fit: cover;
+}
+.ninCardChild {
+  position: absolute;
+  top: 52.48px;
+  left: 10.16px;
+  width: 82.6px;
+  height: 85.7px;
+  object-fit: cover;
+}
+.cyril,
+.surnamenom {
+  align-self: stretch;
+  position: relative;
+  line-height: 135%;
+  font-weight: 600;
+}
+.cyril {
+  font-size: 8.89px;
+  font-weight: 500;
+  color: #000;
+}
+.surnamenomParent {
+  width: 62.2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2.5px;
+}
+.givenNamesprenoms {
+  width: 99.7px;
+  position: relative;
+  line-height: 135%;
+  font-weight: 600;
+  display: inline-block;
+}
+.frameParent,
+.givenNamesprenomsParent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.givenNamesprenomsParent {
+  align-self: stretch;
+  gap: 2.5px;
+}
+.frameParent {
+  position: absolute;
+  top: 52.48px;
+  left: 106.06px;
+  width: 99.7px;
+  gap: 5.1px;
+  font-size: 7.62px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.div,
+.div1,
+.div2,
+.div3 {
+  position: absolute;
+  line-height: 135%;
+  transform-origin: 0 0;
+}
+.div {
+  top: 46.93px;
+  left: 314.44px;
+  display: inline-block;
+  width: 59.1px;
+  height: 9.5px;
+  transform: rotate(-180deg);
+}
+.div1,
+.div2,
+.div3 {
+  top: 190.32px;
+  left: 24.78px;
+  font-size: 8.31px;
+  transform: rotate(-31.6deg);
+}
+.div2,
+.div3 {
+  top: 144.67px;
+  left: 30.47px;
+}
+.div3 {
+  top: 202.75px;
+  left: 308.72px;
+  transform: rotate(-147.6deg);
+}
+.barcode1Icon {
+  position: absolute;
+  top: 46.93px;
+  left: 241.02px;
+  width: 86.4px;
+  height: 84.5px;
+}
+.nationalIdentificationNumber,
+.nga {
+  position: absolute;
+  top: 150.81px;
+  left: calc(50% - 78.75px);
+  color: #000;
+}
+.nga {
+  top: 26.32px;
+  left: calc(50% + 104.58px);
+}
+.div4,
+.kindlyEnsureYou {
+  position: absolute;
+  font-weight: 500;
+}
+.div4 {
+  top: 166.68px;
+  left: calc(50% - 78.28px);
+  font-size: 20.32px;
+  color: #000;
+  white-space: pre-wrap;
+}
+.kindlyEnsureYou {
+  top: 194.63px;
+  left: calc(50% - 91.45px);
+  font-size: 6.35px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.ninCard {
+  width: 336.6px;
+  position: relative;
+  background-color: #f8f6ee;
+  border: 0.7px solid rgba(0, 0, 0, 0.52);
+  box-sizing: border-box;
+  height: 211.9px;
+  overflow: hidden;
+  text-align: left;
+  font-size: 8.89px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: Inter;
+  /* height: 211.93px; */
+}

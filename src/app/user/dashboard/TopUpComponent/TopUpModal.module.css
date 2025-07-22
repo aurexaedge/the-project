@@ -1,0 +1,232 @@
+/* MODAL SECTION  */
+.hide_container {
+  display: none;
+}
+
+.continue_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(3, 3, 3, 0.6);
+
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  margin-top: 0px;
+}
+
+.continue_container.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: 500ms ease;
+}
+
+.continue_container.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: 500ms ease;
+}
+
+.continue_wrapper {
+  display: fixed;
+  width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  border-radius: 16px;
+  overflow-y: scroll;
+}
+.continue_wrapper_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgb(223, 223, 223);
+  padding-bottom: 15px;
+}
+
+.continue_wrapper_header p {
+  font-weight: 500;
+}
+.continue_cancel_icon {
+  font-size: 20px;
+  color: black;
+  cursor: pointer;
+}
+
+.header {
+  font-size: 15px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+  text-align: center;
+}
+
+.amount_container {
+  margin-bottom: 40px;
+  height: 100px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* color: #fff; */
+}
+.amount_container p:nth-of-type(1) {
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+.amount_container p:nth-of-type(2) {
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* @@new code  */
+.nin_container {
+  min-height: 100%;
+  margin-bottom: 80px;
+}
+
+.description_container {
+  margin-top: 0px;
+}
+
+.description_container > p {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+.description_container span {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.description_container ul {
+  list-style-type: none;
+  margin-top: 20px 0px 0px 10px;
+  font-size: 13px;
+  font-weight: 300;
+  opacity: 0.9;
+}
+.login_wrapper {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  height: fit-content;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 30px;
+}
+
+.input_wrapper {
+  padding-bottom: 8px;
+}
+.login_wrapper label {
+  color: black;
+
+  font-size: 13px;
+  position: relative;
+}
+
+.account_inner {
+  display: grid;
+  grid-template-columns: 150px 2fr;
+  margin-top: 15px;
+}
+.accountDetails {
+  margin: 20px 0px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+    rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.account_inner p {
+  font-size: 12px;
+}
+.account_inner p:nth-of-type(1) {
+  font-weight: 600;
+}
+
+/* utilities  */
+.btn_copy {
+  font-size: 11px;
+  margin-left: 10px;
+  /* border: 1px solid rgb(207, 207, 207); */
+  padding: 0px 5px;
+  cursor: pointer;
+  background-color: rgb(199, 199, 199);
+}
+.button_container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+}
+.btn_close {
+  background-color: rgb(202, 202, 202);
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  margin-left: auto;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 900px) {
+  .continue_container {
+    height: 100vh;
+    align-items: center;
+  }
+  .continue_wrapper {
+    width: 300px;
+    margin-top: 0px;
+  }
+
+  .data_inner h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .data_value {
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .description_container span {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  .account_inner {
+    margin-top: 15px;
+
+    display: flex;
+    flex-direction: column;
+  }
+  /* @@ new section  */
+  .nin_container {
+    margin-bottom: 10px;
+  }
+  .login_wrapper {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    background: none;
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}

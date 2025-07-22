@@ -1,0 +1,162 @@
+.dashboard_container {
+  margin-top: 30px;
+}
+.wrapper {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  height: fit-content;
+  padding-bottom: 50px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header p {
+  opacity: 0.9;
+  font-weight: 300;
+}
+.logout_icon {
+  cursor: pointer;
+}
+
+.nin_header {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+.info {
+  font-size: 13px;
+  margin-top: 17px;
+  font-weight: 600;
+}
+.info_icon {
+  color: red;
+  margin-right: 3px;
+}
+.input_wrapper label {
+  color: black;
+
+  font-size: 13px;
+  position: relative;
+}
+.input_wrapper input {
+  margin-top: 5px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  height: 56px;
+  font-family: var(--font-roboto);
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 1px solid rgb(199, 199, 199);
+  fill: none;
+  color: black;
+}
+
+.btn_submit {
+  padding: 10px 20px;
+  width: 250px;
+  margin-top: 20px;
+  background-color: rgb(180, 180, 180);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn_submit:hover {
+  transition: 0.3s ease-in-out;
+  background-color: rgb(209, 209, 209);
+}
+.error_wrapper {
+  margin-top: 10px;
+  background-color: #ffb3b3;
+  padding: 8px;
+  color: #cc0000;
+  font-size: 13px;
+}
+
+.user_image_container {
+  height: 100%;
+  height: 400px;
+}
+
+.user_image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.message_container {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.bio_inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 13px;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.photo_wrapper {
+  display: flex;
+  gap: 20px;
+}
+.barcode_container {
+  width: 200px;
+  margin-top: 20px;
+  height: 200px;
+  background-color: #fff;
+}
+.signature_container {
+  width: 200px;
+  margin-top: 20px;
+  height: 200px;
+  background-color: #fff;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+.signature_image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+@media screen and (max-width: 900px) {
+  .wrapper {
+    width: 100%;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    height: fit-content;
+    padding-bottom: 50px;
+  }
+
+  .nin_header {
+    font-size: 15px;
+  }
+
+  .message_container {
+    grid-template-columns: 1fr;
+  }
+
+  .photo_wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+}

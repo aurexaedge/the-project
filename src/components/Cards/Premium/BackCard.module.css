@@ -1,0 +1,122 @@
+.disclaimer {
+  text-decoration: none;
+  position: relative;
+  font-weight: 700;
+  color: inherit;
+  display: inline-block;
+  min-width: 95px;
+}
+.disclaimerWrapper {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 20px;
+  font-size: 15.2px;
+}
+.trustButVerify {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  font-style: italic;
+  color: inherit;
+  min-width: 67px;
+}
+.verificationNotice {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 20px;
+  color: rgba(0, 0, 0, 0.8);
+}
+.kindlyEnsureEach {
+  align-self: stretch;
+  position: relative;
+  line-height: 135%;
+  font-weight: 500;
+  text-align: center;
+}
+.frameParent,
+.ninCardInner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameParent {
+  flex: 1;
+  flex-direction: column;
+  gap: 6.8px;
+}
+.ninCardInner {
+  align-self: stretch;
+  flex-direction: row;
+  padding: 0 4px 0 3px;
+  text-align: left;
+  font-size: 8.9px;
+  color: #000;
+  font-family: Inter;
+  margin-top: -10px;
+}
+.caution {
+  position: relative;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 63px;
+}
+.cautionNotice {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 21px 0 20px;
+}
+.ifThisNin,
+.youAreOnly {
+  margin-block-start: 0;
+  margin-block-end: 7.62px;
+}
+.theFederalGovernment {
+  margin: 0;
+}
+.ifThisNinContainer {
+  align-self: stretch;
+  position: relative;
+  font-size: 7.6px;
+  line-height: 135%;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+.cautionNoticeParent,
+.ninCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.cautionNoticeParent {
+  align-self: stretch;
+  padding: 0 1px 0 0;
+  gap: 5.3px;
+  text-align: left;
+  font-size: 12.7px;
+  color: #000;
+  font-family: Inter;
+  margin-top: -10px;
+}
+.ninCard {
+  width: 336.6px;
+  background-color: #fff;
+  border: 1.9px solid #000;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 12px 12px 5px 20px;
+  gap: 13px;
+  line-height: normal;
+  letter-spacing: normal;
+  height: 211.93px;
+}

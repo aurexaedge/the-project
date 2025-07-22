@@ -1,0 +1,256 @@
+/* @ hero section  */
+.hero_backgound {
+  background-image: url('/home_hero_bg.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  width: 100%;
+  height: 400px;
+}
+.hero_section {
+  height: 100%;
+  padding: 10px;
+  max-width: var(--max-width);
+  margin: 0px auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+
+  color: #fff;
+}
+
+.hero_right {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.left_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.left_container > p:nth-of-type(1) {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.hero_header {
+  margin-bottom: 40px;
+}
+.hero_header h2 {
+  font-size: 60px;
+}
+
+.hero_header p {
+  font-size: 30px;
+}
+
+/* why bank section  */
+.why_bank {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 50px;
+}
+.why_bank_left p:nth-of-type(1) {
+  font-size: 30px;
+  color: #ff3333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.why_bank_left p:nth-of-type(2) {
+  max-width: 300px;
+  margin-top: 10px;
+}
+.why_bank_right > p {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.why_bank_card {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  margin-bottom: 30px;
+  width: 500px;
+}
+
+.card_writeup > p:nth-of-type(1) {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.card_writeup {
+  margin-left: -20px;
+}
+.card_writeup > p:nth-of-type(2) {
+  opacity: 0.5;
+  font-size: 12;
+}
+
+.image_container {
+  position: relative;
+  width: 70px;
+  height: auto;
+}
+
+/* globe section  */
+.globe_container {
+  background-image: url('/globe_img.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  width: 100%;
+  min-height: 600px;
+}
+
+.globe_wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: 50px;
+  padding-top: 50px;
+}
+
+.globe_wrapper > p {
+  max-width: 800px;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+.globe_count {
+  max-width: 600px;
+  color: #fff;
+  margin-bottom: 40px;
+}
+.globe_wrapper > p {
+  font-size: 50px;
+}
+
+.globe_count {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.globe_card > p:nth-of-type(1) {
+  font-size: 45px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.globe_card > p:nth-of-type(2) {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* utilities */
+.btn_hero {
+  background: linear-gradient(170.04deg, #a09bff -8.91%, #6c63ff 99.52%);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff !important;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn_hero:hover {
+  background: linear-gradient(170.04deg, #bab6ff -8.91%, #6c63ff 99.52%);
+}
+
+@media screen and (max-width: 900px) {
+  /* hero section */
+  .hero_backgound {
+    position: relative;
+  }
+  .hero_section {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .left_container > p:nth-of-type(1) {
+    gap: 2px;
+    font-size: 8px;
+  }
+  .hero_header {
+    margin-bottom: 0px;
+    position: absolute;
+    margin-top: 100px;
+    z-index: 1;
+  }
+  .hero_header h2 {
+    font-size: 40px;
+  }
+
+  .hero_header p {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  .hero_right {
+    position: absolute;
+    width: 200px;
+    margin-top: 90px;
+    margin-left: 150px;
+  }
+
+  /* why bank section  */
+  .why_bank {
+    grid-template-columns: 1fr;
+    margin-top: 90px;
+  }
+
+  .why_bank_left p:nth-of-type(1) {
+    font-size: 20px;
+    color: #ff3333;
+  }
+  .why_bank_left p:nth-of-type(2) {
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+  .why_bank_card {
+    grid-template-columns: 20% 80%;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+
+  .card_writeup > p:nth-of-type(1) {
+    margin-bottom: 5px;
+    font-size: 11px;
+    /* @please look at this font when you host */
+  }
+  .card_writeup {
+    margin-left: -5px;
+  }
+  .card_writeup > p:nth-of-type(2) {
+    opacity: 0.5;
+    font-size: 9px;
+    /* @please look at this font when you host */
+  }
+  .image_container {
+    width: 50px;
+  }
+  /* globe section  */
+  .globe_container {
+    width: 100%;
+    min-height: 800px;
+  }
+  /* utilities  */
+  .btn_hero {
+    font-weight: 500;
+    font-size: 12px;
+    font-family: 'Rubik', sans-serif;
+  }
+}

@@ -1,0 +1,380 @@
+.digitalNinSlip,
+.federalRepublicOf {
+  position: relative;
+  z-index: 1;
+}
+.digitalNinSlip {
+  text-decoration: none;
+  font-size: 10.6px;
+  font-weight: 700;
+  color: #000;
+  display: inline-block;
+  min-width: 89px;
+}
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 0 5.6px;
+  gap: 0.6px;
+}
+.surnamenoms {
+  width: 84.6px;
+  line-height: 10px;
+}
+.givenNamesprenoms,
+.miuweme,
+.surnamenoms {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  z-index: 1;
+}
+.miuweme {
+  width: 84.6px;
+  font-size: 8.5px;
+  line-height: 135%;
+  color: #000;
+}
+.givenNamesprenoms {
+  line-height: 10px;
+  min-width: 95.2px;
+}
+.nameContainer,
+.nameFields {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.nameFields {
+  flex-direction: column;
+  gap: 2.6px;
+}
+.nameContainer {
+  flex-direction: row;
+  padding: 0 69px;
+  font-size: 7.3px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.godblessOchia,
+.nga {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.godblessOchia {
+  width: 95.2px;
+  line-height: 135%;
+  font-weight: 500;
+}
+.nga {
+  min-width: 21px;
+}
+.country,
+.nameDetails {
+  display: flex;
+  align-items: flex-start;
+}
+.country {
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 6.6px 0 0;
+  font-size: 9.3px;
+}
+.nameDetails {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+.dateOfBirth1 {
+  margin-right: -15.3px;
+  width: 95.2px;
+  position: relative;
+  line-height: 10px;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.dateOfBirth {
+  width: 79.9px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+}
+.sexsexe {
+  position: relative;
+  line-height: 10px;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 35px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.dateOfBirthParent {
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: -4px;
+  font-size: 7.3px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.dateOfBirthParent,
+.frameWrapper,
+.nameDetailsParent {
+  display: flex;
+  align-items: flex-start;
+}
+.nameDetailsParent {
+  align-self: stretch;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.frameWrapper {
+  width: 211.5px;
+  height: 24.5px;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+.apr1990 {
+  margin-right: -15.3px;
+  width: 95.2px;
+  position: relative;
+  line-height: 135%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.month {
+  width: 79.9px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+}
+.male {
+  position: relative;
+  line-height: 135%;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 24px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.birthMonth,
+.dateOfBirthDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.birthMonth {
+  align-self: stretch;
+}
+.dateOfBirthDetails {
+  height: 11.8px;
+  padding: 0 22px;
+  box-sizing: border-box;
+}
+.nationalIdentificationNumber {
+  position: relative;
+  z-index: 1;
+}
+.ninDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 9px;
+}
+.premuimBackground1Icon {
+  height: 202.3px;
+  flex: 1;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+}
+.div,
+.div1 {
+  width: 52px;
+  position: absolute;
+  margin: 0 !important;
+  bottom: 9.65px;
+  left: 23.6px;
+  line-height: 135%;
+  display: inline-block;
+  transform: rotate(-31.6deg);
+  transform-origin: 0 0;
+  z-index: 1;
+}
+.div1 {
+  width: 45.7px;
+  bottom: 30.95px;
+  left: 29.1px;
+  z-index: 2;
+}
+.barcodeRow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+  height: 100%;
+}
+.barcode1Icon,
+.barcodeBorderIcon {
+  position: absolute;
+  top: 50.1px;
+  left: 7.1px;
+  width: 78.8px;
+  height: 81.8px;
+  object-fit: cover;
+  z-index: 1;
+}
+.barcode1Icon {
+  top: 19.8px;
+  left: 238px;
+  width: 74px;
+  height: 71.4px;
+}
+.barcodeElements {
+  height: 202.3px;
+  width: 321.3px;
+  position: absolute;
+  margin: 0 !important;
+  top: -164.4px;
+  left: -76.4px;
+}
+.space {
+  position: relative;
+  font-size: 19.4px;
+  font-weight: 500;
+  color: #000;
+  white-space: pre-wrap;
+  z-index: 1;
+}
+.barcodeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  font-size: 7.9px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.ninDetailsParent {
+  gap: 5.2px;
+}
+.dateOfBirthDetailsParent,
+.frameContainer,
+.ninDetailsParent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.dateOfBirthDetailsParent {
+  align-self: stretch;
+  gap: 22.7px;
+}
+.frameContainer {
+  flex: 1;
+  padding: 5px 0 0;
+}
+.issueDate {
+  position: relative;
+  line-height: 9px;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 38px;
+  z-index: 1;
+}
+.issueDateDetails {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 3px;
+}
+.jul2024 {
+  position: relative;
+  font-size: 7.3px;
+  line-height: 135%;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  min-width: 45px;
+  white-space: nowrap;
+  z-index: 2;
+}
+.issueDateContainer {
+  width: 45px;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 6.6px;
+}
+.frameGroup,
+.frameParent,
+.issueDateContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+.frameGroup {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 7.7px;
+  margin-top: -3.4px;
+}
+.frameParent {
+  width: 221.7px;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.detailsContainer,
+.ninCard {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  font-family: Inter;
+}
+.detailsContainer {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 8.5px;
+  color: #000;
+}
+.ninCard {
+  width: 321.3px;
+  background-color: #f8f6ee;
+  border: 0.7px solid rgba(0, 0, 0, 0.24);
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 13px 22px 20px 28px;
+  gap: 2.4px;
+  line-height: normal;
+  letter-spacing: normal;
+  font-size: 11.9px;
+  color: #1b9041;
+}

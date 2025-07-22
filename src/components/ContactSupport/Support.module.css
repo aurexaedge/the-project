@@ -1,0 +1,25 @@
+.card_contaner {
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  padding: 10px;
+  margin-top: 30px;
+
+  max-width: 500px;
+  font-size: 15px;
+}
+
+.card_contaner h3 {
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+.card_contaner > p:nth-of-type(1) {
+  opacity: 0.9;
+}
+
+.card_contaner > p:nth-of-type(2) {
+  margin-top: 20px;
+  opacity: 0.8;
+}
+.lock_icon {
+  margin-right: 5px;
+}
