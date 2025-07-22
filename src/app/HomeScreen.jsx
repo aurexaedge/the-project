@@ -66,7 +66,9 @@ export default function HomeScreen() {
 
             <div className={styles.card_writeup}>
               <p>Simple way to start banking with us</p>
-              <p>Open accounts, apply for cards, and invest in just few taps</p>
+              <p>
+                Open accounts, apply for cards, and invest in just few taps.
+              </p>
             </div>
           </div>
           <div className={styles.why_bank_card}>
