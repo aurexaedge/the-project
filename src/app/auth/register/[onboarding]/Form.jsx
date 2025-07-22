@@ -92,8 +92,8 @@ const CompleteRegistration = () => {
   };
 
   const submitFormData = async () => {
-    // toast.warning('App is still under construction');
-    // return;
+    toast.warning('App is still under construction');
+    return;
 
     // return;
     if (
