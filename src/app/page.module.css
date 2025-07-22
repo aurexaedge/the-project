@@ -247,6 +247,10 @@
     width: 100%;
     min-height: 800px;
   }
+
+  .globe_wrapper > p {
+    font-size: 40px;
+  }
   /* utilities  */
   .btn_hero {
     font-weight: 500;
