@@ -4,37 +4,44 @@ import userModel from '@/models/user';
 import db from '@/utils/db';
 import userWalletModel from '@/models/userWallet';
 import tokenModel from '@/models/token';
+import accountDetailModel from '@/models/accountDetail';
 
 import { Resend } from 'resend';
 import crypto from 'crypto';
 import { generateRandomNumber } from '@/utils/generateUserName';
 import { v4 as uuidv4 } from 'uuid';
+import { generateBankDetails } from '@/utils/generateBankDetails';
 
 const RESEND_API_KEY = `${process.env.RESEND_API_KEY}`;
 const resend = new Resend(RESEND_API_KEY);
 
 export const POST = async (res) => {
-  const { username, phoneNumber, email, password, confirmPassword, token } =
-    await res.json();
-
-  //   return new NextResponse(JSON.stringify({ message: uuidv4() }), {
-  //     status: 200,
-  //   });
-
-  console.log({
+  const {
     username,
     phoneNumber,
     email,
     password,
     confirmPassword,
     token,
-  });
+    firstName,
+    lastName,
+    transactionPin,
+    accountType,
+  } = await res.json();
+
+  //   return new NextResponse(JSON.stringify({ message: uuidv4() }), {
+  //     status: 200,
+  //   });
 
   if (
     !username ||
     !email ||
     !email.includes('@') ||
     !password ||
+    !firstName ||
+    !lastName ||
+    !transactionPin ||
+    !accountType ||
     !confirmPassword
   ) {
     return new NextResponse(JSON.stringify({ message: 'Validation error' }), {
@@ -103,18 +110,34 @@ export const POST = async (res) => {
       email,
       password: bcryptjs.hashSync(password),
       superUser: false,
+      firstName,
+      lastName,
+      transactionPin,
+      accountType,
     });
 
-    if (newUser) {
-      await tokenModel.deleteMany({
-        email: email,
-        purpose: 'email verification',
-      });
-    }
+    // if (newUser) {
+    //   await tokenModel.deleteMany({
+    //     email: email,
+    //     purpose: 'email verification',
+    //   });
+    // }
 
     //!create wallet balance
     await userWalletModel.create({
       userId: newUser?._id,
+      accountType,
+    });
+
+    //! create account details
+    const { accountNumber, routingNumber } = generateBankDetails();
+    await accountDetailModel.create({
+      userId: newUser?._id,
+      accountType,
+      accountName: `${firstName} ${lastName}`,
+      bankName: 'Aurexa Edge Bank',
+      routingNumber,
+      accountNumber,
     });
 
     return new NextResponse(

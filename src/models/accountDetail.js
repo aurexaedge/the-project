@@ -9,7 +9,7 @@ const accountDetailSchema = new mongoose.Schema(
     customerEmail: { type: String },
     bankName: { type: String },
     accountType: { type: String },
-    sortCode: { type: String }, // write a code to generate 8 digit sort code mixed with caps and small letter
+    routingNumber: { type: String }, // write a code to generate 8 digit sort code mixed with caps and small letter
   },
   {
     timestamps: true,

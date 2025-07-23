@@ -53,6 +53,20 @@ const CompleteRegistration = () => {
     num6: '',
   });
 
+  useEffect(() => {
+    inputRefs[0].current?.focus();
+  }, []);
+
+  const handleKeyDown = (e, index) => {
+    if (
+      e.key === 'Backspace' &&
+      formData[`num${index + 1}`] === '' &&
+      index > 0
+    ) {
+      inputRefs[index - 1].current.focus();
+    }
+  };
+
   const handleInputChange = (e, index) => {
     let inputValue = e.target.value.replace(/\D/, '');
     if (inputValue.length > 1) {
@@ -92,10 +106,9 @@ const CompleteRegistration = () => {
   };
 
   const submitFormData = async () => {
-    toast.warning('App is still under construction');
-    return;
-
+    // toast.warning('App is still under construction');
     // return;
+
     if (
       formData.num1.length === 0 ||
       formData.num2.length === 0 ||
@@ -177,9 +190,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num1'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num1}
                   onChange={(e) => handleInputChange(e, 0)}
+                  onKeyDown={(e) => handleKeyDown(e, 0)}
                   ref={inputRefs[0]}
                 />
               </label>
@@ -190,9 +205,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num2'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num2}
                   onChange={(e) => handleInputChange(e, 1)}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
                   ref={inputRefs[1]}
                 />
               </label>
@@ -203,9 +220,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num3'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num3}
                   onChange={(e) => handleInputChange(e, 2)}
+                  onKeyDown={(e) => handleKeyDown(e, 2)}
                   ref={inputRefs[2]}
                 />
               </label>
@@ -216,9 +235,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num4'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num4}
                   onChange={(e) => handleInputChange(e, 3)}
+                  onKeyDown={(e) => handleKeyDown(e, 3)}
                   ref={inputRefs[3]}
                 />
               </label>
@@ -229,9 +250,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num5'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num5}
                   onChange={(e) => handleInputChange(e, 4)}
+                  onKeyDown={(e) => handleKeyDown(e, 4)}
                   ref={inputRefs[4]}
                 />
               </label>
@@ -242,9 +265,11 @@ const CompleteRegistration = () => {
                 <input
                   type='tel'
                   name='num6'
+                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num6}
                   onChange={(e) => handleInputChange(e, 5)}
+                  onKeyDown={(e) => handleKeyDown(e, 5)}
                   ref={inputRefs[5]}
                 />
               </label>

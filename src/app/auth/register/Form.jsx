@@ -63,8 +63,8 @@ const Register = () => {
   const [showPasword, setShowPasword] = useState(false);
 
   const submitFormData = async () => {
-    // toast.warning('App is still under construction');
-    // return;
+    toast.warning('App is still under construction');
+    return;
     if (
       formData.username.length === 0 ||
       formData.email.length === 0 ||
@@ -83,9 +83,6 @@ const Register = () => {
     if (formData.password !== formData.confirmPassword) {
       return toast.error('Passwords must match!');
     }
-    console.log(formData);
-    toast.warning('App is still under construction');
-    return;
 
     if (
       formData.username &&

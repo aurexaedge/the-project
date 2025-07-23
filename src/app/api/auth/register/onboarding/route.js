@@ -21,10 +21,6 @@ export const POST = async (res) => {
     !email ||
     !email.includes('@') ||
     !password ||
-    !firstName ||
-    !lastName ||
-    !transactionPin ||
-    !acountType ||
     !confirmPassword
   ) {
     return new NextResponse(JSON.stringify({ message: 'Validation error' }), {
