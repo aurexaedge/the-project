@@ -53,7 +53,7 @@ const Register = () => {
     firstName: '',
     lastName: '',
     transactionPin: '',
-    acountType: '',
+    accountType: '',
   });
 
   const [formDataError, setFormDataError] = useState(false);
@@ -63,15 +63,15 @@ const Register = () => {
   const [showPasword, setShowPasword] = useState(false);
 
   const submitFormData = async () => {
-    toast.warning('App is still under construction');
-    return;
+    // toast.warning('App is still under construction');
+    // return;
     if (
       formData.username.length === 0 ||
       formData.email.length === 0 ||
       formData.password.length === 0 ||
       formData.firstName === 0 ||
       formData.lastName.length === 0 ||
-      formData.acountType.length === 0 ||
+      formData.accountType.length === 0 ||
       formData.transactionPin.length === 0 ||
       formData.confirmPassword.length === 0
     ) {
@@ -83,6 +83,9 @@ const Register = () => {
     if (formData.password !== formData.confirmPassword) {
       return toast.error('Passwords must match!');
     }
+    console.log(formData);
+    toast.warning('App is still under construction');
+    return;
 
     if (
       formData.username &&
@@ -91,7 +94,7 @@ const Register = () => {
       formData.firstName &&
       formData.lastName &&
       formData.transactionPin &&
-      formData.acountType &&
+      formData.accountType &&
       formData.confirmPassword
     ) {
       try {
@@ -115,7 +118,7 @@ const Register = () => {
             firstName: '',
             lastName: '',
             transactionPin: '',
-            acountType: '',
+            accountType: '',
           });
         }
         console.clear();
@@ -206,7 +209,7 @@ const Register = () => {
           </div>
           <div className={styles.input_wrapper}>
             <label htmlFor='lastName'>
-              lastName: <br />
+              Last Name: <br />
               <input
                 type='text'
                 name='lastName'
@@ -272,14 +275,18 @@ const Register = () => {
             <label htmlFor='transactionPin'>
               Transaction Pin: <br />
               <input
-                type='transactionPin'
+                type='password'
                 name='transactionPin'
                 className={styles.form_control}
                 value={formData.transactionPin}
-                // placeholder='enter transactionPin'
+                placeholder='4 digit pin'
+                inputMode='numeric' // mobile-friendly numeric keyboard
+                maxLength={4}
                 onChange={(e) => {
-                  setFormData({ ...formData, transactionPin: e.target.value });
-                  // setFqui(btoa(e.target.value));
+                  const value = e.target.value;
+                  if (/^\d{0,4}$/.test(value)) {
+                    setFormData({ ...formData, transactionPin: value });
+                  }
                 }}
               />
               <br />
@@ -312,7 +319,7 @@ const Register = () => {
                 })}
               </select>
               <br />
-              {formDataError && formData?.acountType?.length <= 0 ? (
+              {formDataError && formData?.accountType?.length <= 0 ? (
                 <span style={{ color: 'red' }}>* required</span>
               ) : (
                 ''
