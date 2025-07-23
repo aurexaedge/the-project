@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, trim: true },
     transactionPin: { type: String },
     superUser: { type: Boolean, default: false },
+
+    accountType: { type: String, trim: true },
+    ssn: { type: String, trim: true },
+    gender: { type: String, trim: true },
+    securityQuestion: { type: String, trim: true },
+    securityAnswer: { type: String, trim: true },
   },
   {
     timestamps: true,

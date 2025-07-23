@@ -14,12 +14,6 @@ const orderSchema = new mongoose.Schema(
     isDeviceDiagnoised: { type: Boolean, default: false },
     isOrderRejected: { type: Boolean, default: false },
 
-    // deliveryPaymentDetails: {
-    //   status: { type: String },
-    //   amount: { type: String },
-    //   paymentId: { type: String },
-    // },
-
     deliveryPaymentStatus: { type: Boolean, default: false },
     deliveryPaymentAmount: { type: String },
     amountPaidByUser: { type: String, default: '0' },

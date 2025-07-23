@@ -16,6 +16,15 @@ import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import { toast } from 'sonner';
 import PasswordChecker from './PasswordChecker/PasswordChecker';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
+const accountTypes = [
+  'Personal (Savings)',
+  'Current',
+  'Bussiness Checking',
+  'Checking',
+  'Fixed Desposit',
+  'Non Resident',
+  'Joint Account',
+];
 
 const Register = () => {
   const router = useRouter();
@@ -41,6 +50,10 @@ const Register = () => {
     confirmPassword: '',
     phoneNumber: '',
     referralId: referralId,
+    firstName: '',
+    lastName: '',
+    transactionPin: '',
+    acountType: '',
   });
 
   const [formDataError, setFormDataError] = useState(false);
@@ -56,6 +69,10 @@ const Register = () => {
       formData.username.length === 0 ||
       formData.email.length === 0 ||
       formData.password.length === 0 ||
+      formData.firstName === 0 ||
+      formData.lastName.length === 0 ||
+      formData.acountType.length === 0 ||
+      formData.transactionPin.length === 0 ||
       formData.confirmPassword.length === 0
     ) {
       return setFormDataError(true);
@@ -71,6 +88,10 @@ const Register = () => {
       formData.username &&
       formData.email &&
       formData.password &&
+      formData.firstName &&
+      formData.lastName &&
+      formData.transactionPin &&
+      formData.acountType &&
       formData.confirmPassword
     ) {
       try {
@@ -91,6 +112,10 @@ const Register = () => {
             password: '',
             confirmPassword: '',
             phoneNumber: '',
+            firstName: '',
+            lastName: '',
+            transactionPin: '',
+            acountType: '',
           });
         }
         console.clear();
@@ -159,6 +184,48 @@ const Register = () => {
           <h3>Create account</h3>
           <p>Set up your Aurexa Edge account in just 2mins.</p>
           <div className={styles.input_wrapper}>
+            <label htmlFor='firstName'>
+              First Name: <br />
+              <input
+                type='text'
+                name='firstName'
+                className={styles.form_control}
+                value={formData.firstName}
+                // placeholder='enter firstName'
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+              />
+              <br />
+              {formDataError && formData.firstName.length <= 0 ? (
+                <span style={{ color: 'red' }}>* required</span>
+              ) : (
+                ''
+              )}
+            </label>
+          </div>
+          <div className={styles.input_wrapper}>
+            <label htmlFor='lastName'>
+              lastName: <br />
+              <input
+                type='text'
+                name='lastName'
+                className={styles.form_control}
+                value={formData.lastName}
+                // placeholder='enter lastName'
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+              />
+              <br />
+              {formDataError && formData.lastName.length <= 0 ? (
+                <span style={{ color: 'red' }}>* required</span>
+              ) : (
+                ''
+              )}
+            </label>
+          </div>
+          <div className={styles.input_wrapper}>
             <label htmlFor='username'>
               Username: <br />
               <input
@@ -166,7 +233,7 @@ const Register = () => {
                 name='username'
                 className={styles.form_control}
                 value={formData.username}
-                // placeholder='Enter username'
+                // placeholder='enter username'
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
                 }
@@ -187,7 +254,7 @@ const Register = () => {
                 name='email'
                 className={styles.form_control}
                 value={formData.email}
-                // placeholder='Enter email'
+                // placeholder='enter email'
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
                   // setFqui(btoa(e.target.value));
@@ -195,6 +262,57 @@ const Register = () => {
               />
               <br />
               {formDataError && formData.email.length <= 0 ? (
+                <span style={{ color: 'red' }}>* required</span>
+              ) : (
+                ''
+              )}
+            </label>
+          </div>
+          <div className={styles.input_wrapper}>
+            <label htmlFor='transactionPin'>
+              Transaction Pin: <br />
+              <input
+                type='transactionPin'
+                name='transactionPin'
+                className={styles.form_control}
+                value={formData.transactionPin}
+                // placeholder='enter transactionPin'
+                onChange={(e) => {
+                  setFormData({ ...formData, transactionPin: e.target.value });
+                  // setFqui(btoa(e.target.value));
+                }}
+              />
+              <br />
+              {formDataError && formData?.transactionPin?.length <= 0 ? (
+                <span style={{ color: 'red' }}>* required</span>
+              ) : (
+                ''
+              )}
+            </label>
+          </div>
+
+          <div className={styles.input_wrapper}>
+            <label htmlFor='accountType'>
+              Account Type: <br />
+              <select
+                name='accountType'
+                id=''
+                value={formData?.accountType}
+                onChange={(e) =>
+                  setFormData({ ...formData, accountType: e.target.value })
+                }
+              >
+                <option value=''>-Select type-</option>
+                {accountTypes.map((item, index) => {
+                  return (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </select>
+              <br />
+              {formDataError && formData?.acountType?.length <= 0 ? (
                 <span style={{ color: 'red' }}>* required</span>
               ) : (
                 ''

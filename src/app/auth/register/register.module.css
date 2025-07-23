@@ -113,6 +113,20 @@
   font-size: 12px;
   padding: 15px;
 }
+
+.input_wrapper select {
+  width: 100%;
+  padding: 10px;
+  font-family: var(--font-roboto);
+  background-color: inherit;
+  height: 100%;
+  border: none;
+
+  outline: none;
+  fill: none;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
 /* utilities  */
 .btn_hero {
   margin-bottom: 20px;
