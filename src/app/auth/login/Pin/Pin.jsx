@@ -1,22 +1,21 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import styles from '../../register/[onboarding]/username.module.css';
+import React, { useState, useEffect, useContext } from 'react';
+import styles from './Pin.module.css';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, getSession, useSession } from 'next-auth/react';
-import { useQueryState } from 'nuqs';
+import { AppContext } from '@/context/AppContext';
 
 import axios from 'axios';
-import LogoItem from '@/components/LogoItem/LogoItem';
-import Link from 'next/link';
-import { MdKeyboardArrowLeft } from 'react-icons/md';
 import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import { toast } from 'sonner';
 
-const Pin = () => {
+const Pin = ({ loginDetails, clearLoginForm }) => {
   const router = useRouter();
+  const { user, setUser } = useContext(AppContext);
 
-  const [quid, setQuid] = useQueryState('quid');
+  const params = useSearchParams();
+  //   let callbackUrl = params.get('callbackUrl') || '/user/dashboard';
 
   const [loading, setLoading] = useState(false);
 
@@ -28,29 +27,37 @@ const Pin = () => {
     num3: '',
     num4: '',
   });
+  //   useEffect(() => {
+  //     inputRefs[0].current?.focus();
+  //   }, []);
 
   const handleInputChange = (e, index) => {
-    let inputValue = e.target.value.replace(/\D/, '');
+    let inputValue = e.target.value.replace(/\D/, ''); // allow only digits
+
+    // Allow only a single character
     if (inputValue.length > 1) {
       inputValue = inputValue.slice(0, 1);
     }
 
-    const inputRef = inputRefs[index];
-    const nextInputRef = inputRefs[index + 1];
+    // Update the current field
+    setFormData((prev) => ({
+      ...prev,
+      [`num${index + 1}`]: inputValue,
+    }));
 
-    setFormData({ ...formData, [`num${index + 1}`]: inputValue });
+    // Auto move to next input if not last and input is valid
+    if (inputValue && index < inputRefs.length - 1) {
+      inputRefs[index + 1].current.focus();
+    }
+  };
 
-    if (inputValue.length === 1 && index < 3) {
-      nextInputRef.current.focus();
-    } else if (inputValue.length === 0 && e.key === 'Backspace' && index > 0) {
-      inputRef.current.focus();
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !formData[`num${index + 1}`] && index > 0) {
+      inputRefs[index - 1].current.focus();
     }
   };
 
   const submitFormData = async () => {
-    // toast.warning('App is still under construction');
-    // return;
-
     if (
       formData.num1.length === 0 ||
       formData.num2.length === 0 ||
@@ -61,42 +68,37 @@ const Pin = () => {
     }
 
     if (formData.num1 && formData.num2 && formData.num3 && formData.num4) {
+      setLoading(true);
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: loginDetails.email,
+        password: loginDetails.password,
+        transactionPin: `${formData.num1}${formData.num2}${formData.num3}${formData.num4}`,
+      });
       try {
-        setLoading(true);
-
-        const formatedFormData = `${formData.num1}${formData.num2}${formData.num3}${formData.num4}`;
-
-        const rawData = {
-          ...JSON.parse(atob(quid)),
-          token: formatedFormData,
-        };
-
-        const res = await axios.post('/api/auth/register', rawData);
-        if (res) {
-          toast.success(res.data.message);
-          setFormData({
-            num1: '',
-            num2: '',
-            num3: '',
-            num4: '',
-          });
+        if (result.ok) {
+          const session = await getSession();
+          if (session?.user) {
+            toast.success('Successful!, hold on, Redirecting...');
+            setUser(session);
+            clearLoginForm();
+            setFormData({ num1: '', num2: '', num3: '', num4: '' });
+          }
+        } else {
+          setLoading(false);
+          toast.error(result.error);
         }
       } catch (error) {
         setLoading(false);
         toast.error(error?.response?.data?.message);
+        console.log(error);
       }
     }
   };
 
   return (
     <main className={styles.login_container}>
-      <div onClick={() => router.push('/')} className={styles.logo_item}>
-        <LogoItem />
-      </div>
       <div className={styles.container_inner}>
-        <button onClick={() => router.back()} className={styles.btn_back}>
-          <MdKeyboardArrowLeft className={styles.back_icon} />
-        </button>
         <div className={styles.login_wrapper}>
           <h3>Transaction Pin</h3>
           <p>Kindly enter your 4 digit pin</p>
@@ -105,11 +107,13 @@ const Pin = () => {
             <div className={styles.input_wrapper}>
               <label htmlFor='num1'>
                 <input
-                  type='tel'
+                  type='password'
                   name='num1'
                   className={styles.form_control}
                   value={formData.num1}
+                  inputMode='numeric'
                   onChange={(e) => handleInputChange(e, 0)}
+                  onKeyDown={(e) => handleKeyDown(e, 0)}
                   ref={inputRefs[0]}
                 />
               </label>
@@ -117,11 +121,13 @@ const Pin = () => {
             <div className={styles.input_wrapper}>
               <label htmlFor='num2'>
                 <input
-                  type='tel'
+                  type='password'
                   name='num2'
                   className={styles.form_control}
                   value={formData.num2}
+                  inputMode='numeric'
                   onChange={(e) => handleInputChange(e, 1)}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
                   ref={inputRefs[1]}
                 />
               </label>
@@ -129,11 +135,13 @@ const Pin = () => {
             <div className={styles.input_wrapper}>
               <label htmlFor='num3'>
                 <input
-                  type='tel'
+                  type='password'
                   name='num3'
                   className={styles.form_control}
                   value={formData.num3}
+                  inputMode='numeric'
                   onChange={(e) => handleInputChange(e, 2)}
+                  onKeyDown={(e) => handleKeyDown(e, 2)}
                   ref={inputRefs[2]}
                 />
               </label>
@@ -141,11 +149,13 @@ const Pin = () => {
             <div className={styles.input_wrapper}>
               <label htmlFor='num4'>
                 <input
-                  type='tel'
+                  type='password'
                   name='num4'
                   className={styles.form_control}
                   value={formData.num4}
+                  inputMode='numeric'
                   onChange={(e) => handleInputChange(e, 3)}
+                  onKeyDown={(e) => handleKeyDown(e, 3)}
                   ref={inputRefs[3]}
                 />
               </label>

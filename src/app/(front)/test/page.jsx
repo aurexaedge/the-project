@@ -1,5 +1,6 @@
 'use client';
 
+import Pin from '@/app/auth/login/Pin/Pin';
 import { useState } from 'react';
 
 const MultiStepForm = () => {
@@ -32,7 +33,6 @@ const MultiStepForm = () => {
   return (
     <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto' }}>
       <h2>Step {step}</h2>
-
       <form onSubmit={handleSubmit}>
         {step === 1 && (
           <div>

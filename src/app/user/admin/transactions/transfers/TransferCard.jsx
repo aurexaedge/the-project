@@ -10,38 +10,48 @@ import { useRouter } from 'next/navigation';
 import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
 import { cutTextTo11, cutTextTo21 } from '@/utils/formatText';
 import useMediaQuery from '@/hooks/useMediaQuery';
-
-const transactionOrders = [
-  {
-    transactionId: '3f2a88a7-9b1e-4c0a-b5c1-7084ae1bbf30',
-    remarks: 'Transfer to Michael Smith',
-    date: '12th July 2025',
-    transactionType: 'debit',
-  },
-  {
-    transactionId: '3g7b70a7-9b1e-4c0a-b5c1-7084ae1bbf30',
-    remarks: 'Transfer to Michael Smith',
-    date: '13th May 2025',
-    transactionType: 'credit',
-  },
-];
+import { useSession } from 'next-auth/react';
+import useFetchData from '@/hooks/useFetchData';
+import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
+import ErrorTemplate from '@/components/ErrorTemplate/ErrorTemplate';
+import EmptyOder from '@/components/EmptyOrderTemplate/EmptyOder';
+import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 
 const TransferCard = ({ snapshot }) => {
   const router = useRouter();
+  const { status, data: session } = useSession();
 
   const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenOrder = (orderId) => {
+  const { data, isError, isLoading, isPending, isFetching } = useFetchData({
+    queryKey: ['fetchTransaction'],
+    endpoint: '/api/v1/transaction/',
+  });
+
+  const handleOpenOrder = (transactionId) => {
+    if (!session?.user) {
+      router.refresh();
+      return;
+    }
     setOpenModal(true);
-    router.push(`/user/admin/transactions/transfers/${orderId}`);
+    router.push(
+      session?.user?.superUser === true
+        ? `/user/admin/transactions/transfers/${transactionId}`
+        : `/user/transactions/${transactionId}`
+    );
   };
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <div className={styles.transfer_container}>
-      {!snapshot && <h3>Transfer History</h3>}
+      {!snapshot && <h3>Transaction History</h3>}
 
-      {transactionOrders?.map((item, index) => {
+      {isLoading === true && <CircleLoader />}
+      {isError && <ErrorTemplate text='Transaction' />}
+
+      {data?.length === 0 && <EmptyOder text='No transactions at the moment' />}
+
+      {data?.map((item, index) => {
         return (
           <div
             key={index}
@@ -51,7 +61,7 @@ const TransferCard = ({ snapshot }) => {
             <div className={styles.left_side}>
               <span
                 className={`${styles.icon_container} ${
-                  item?.transactionType === 'credit'
+                  item?.transactionType === 'Credit'
                     ? styles.credit_icon
                     : styles.debit_icon
                 }`}
@@ -64,18 +74,26 @@ const TransferCard = ({ snapshot }) => {
                     ? cutTextTo11(item?.transactionId)
                     : item?.transactionId}
                 </p>
-                <p>{isMobile ? cutTextTo21(item?.remarks) : item?.remarks}</p>
-                <p>{item?.date}</p>
+                <p>
+                  {isMobile
+                    ? cutTextTo21(item?.shortDescription)
+                    : item?.shortDescription}
+                </p>
+                <p>{formatDateTimeToLocal(item?.createdAt)}</p>
               </div>
             </div>
             <div
               className={`${styles.right_side} ${
-                item?.transactionType === 'credit'
+                item?.transactionType === 'Credit'
                   ? styles.credit
                   : styles.debit
               }`}
             >
-              <span>+&#36;65,000</span>
+              <span>
+                {item?.transactionType === 'Credit' ? '+' : '-'}&#36;
+                {/* {formatAmount(item?.amount)} */}
+                {item?.amount}
+              </span>
               <LiaEdit color='black' />
             </div>
           </div>

@@ -2,10 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Dashboard.module.css';
 import { BsFillWalletFill } from 'react-icons/bs';
-import { AiOutlineWhatsApp } from 'react-icons/ai';
-import Image from 'next/image';
 import { FaWallet } from 'react-icons/fa';
-import { RiInformationLine } from 'react-icons/ri';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import axios from 'axios';
@@ -15,12 +12,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatAmount } from '@/utils/formatAmount';
 import useFetchData from '@/hooks/useFetchData';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { BiCopy } from 'react-icons/bi';
-import { NotificationChat } from '@/utils/chat';
 import { IoMdAddCircle } from 'react-icons/io';
 import TopUpModal from './TopUpComponent/TopUpModal';
-import TopUpCard from '../transactions/Card/TopUpCard';
 import { CiBank } from 'react-icons/ci';
 import Link from 'next/link';
 import { MdLock } from 'react-icons/md';
@@ -87,10 +80,22 @@ const DashboardScreen = ({ referral }) => {
 
         <div className={styles.account_status}>
           <p>Account Status:</p>
-          <p>
-            <MdLock /> Disabled
-            {/* <IoIosCheckmarkCircleOutline /> Active */}
-          </p>
+          {data && (
+            <p
+              className={
+                data?.isAccountLocked
+                  ? styles.disabled_acount
+                  : styles.active_acount
+              }
+            >
+              {data?.isAccountLocked ? (
+                <MdLock />
+              ) : (
+                <IoIosCheckmarkCircleOutline />
+              )}
+              {data?.isAccountLocked ? 'Disabled' : 'Active'}
+            </p>
+          )}
         </div>
       </div>
 
@@ -152,7 +157,11 @@ const DashboardScreen = ({ referral }) => {
               Send Money <CiBank className={styles.topUp_icon} />
             </Link>
           </div>
-          <TopUpModal setShowPopup={setShowPopup} showPopup={showPopup} />
+          <TopUpModal
+            data={data}
+            setShowPopup={setShowPopup}
+            showPopup={showPopup}
+          />
         </div>
 
         <div className={styles.services_wrapper}>
@@ -161,7 +170,12 @@ const DashboardScreen = ({ referral }) => {
         <div className={styles.inner_b}>
           <div className={styles.transaction_heading}>
             <p> Transactions</p>
-            <p> View all</p>
+            <Link
+              style={{ fontSize: '13px', textDecoration: 'underline' }}
+              href='/user/transactions'
+            >
+              View all
+            </Link>
           </div>
           <TransferCard snapshot={true} />
         </div>

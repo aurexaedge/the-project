@@ -254,17 +254,6 @@ const accountTypes = [
 ];
 
 const Wire = () => {
-  const {
-    data,
-    isError,
-    isLoading: isLoadingData,
-    isPending,
-    isFetching,
-  } = useFetchData({
-    queryKey: ['fetchServicePrice'],
-    endpoint: '/api/v1/admin/services/',
-  });
-
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -274,14 +263,13 @@ const Wire = () => {
     bankName: '',
     beneficiaryAccountName: '',
     beneficiaryAccountNumber: '',
-    currency: '',
-    country: '',
     routingNumber: '',
-    swiftCode: '',
+    // swiftCode: '',
     amount: '',
     transactionPin: '',
     description: '',
-    picture: '',
+    transactionType: 'Debit',
+    transferType: 'Wire transfer',
   });
   const handleInputChange = (event) => {
     const value =
@@ -319,18 +307,15 @@ const Wire = () => {
     useMutation({
       mutationFn: async () => {
         const requiredFields = [
-          'accountType',
           'bankName',
           'beneficiaryAccountName',
           'beneficiaryAccountNumber',
-          'currency',
-          'country',
+          'accountType',
           'routingNumber',
-          'swiftCode',
+          // 'swiftCode',
           'amount',
           'transactionPin',
           'description',
-          'picture',
         ];
 
         const hasEmptyFields = requiredFields.some(
@@ -342,23 +327,18 @@ const Wire = () => {
           throw new Error('Validation Error: All fields must be completed');
         }
 
-        const res = await axios.post(
-          `/api/v1/nin-services/new-enrollment`,
-          formData
-        );
+        const res = await axios.post(`/api/v1/transaction`, formData);
         return res.data;
       },
 
       onSuccess: async (res) => {
         setFormData({
-          accountType: '',
           bankName: '',
           beneficiaryAccountName: '',
           beneficiaryAccountNumber: '',
-          currency: '',
-          country: '',
+          accountType: '',
           routingNumber: '',
-          swiftCode: '',
+          // swiftCode: '',
           amount: '',
           transactionPin: '',
           description: '',
@@ -433,7 +413,7 @@ const Wire = () => {
             Beneficiary Account Number: <br />
             <input
               type='number'
-              name='EdgeBankAccountNumber'
+              name='beneficiaryAccountNumber'
               placeholder='97001299833'
               value={formData?.beneficiaryAccountNumber}
               onChange={handleInputChange}
@@ -441,6 +421,33 @@ const Wire = () => {
             <br />
             {formDataError &&
             formData?.beneficiaryAccountNumber?.length <= 0 ? (
+              <span style={{ color: 'red' }}>* required</span>
+            ) : (
+              ''
+            )}
+          </label>
+        </div>
+
+        <div className={styles.input_wrapper}>
+          <label htmlFor='accountType'>
+            Account Type: <br />
+            <select
+              name='accountType'
+              id=''
+              value={formData?.accountType}
+              onChange={handleInputChange}
+            >
+              <option value=''>-Select type-</option>
+              {accountTypes.map((item, index) => {
+                return (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
+            <br />
+            {formDataError && formData?.accountType?.length <= 0 ? (
               <span style={{ color: 'red' }}>* required</span>
             ) : (
               ''
@@ -467,7 +474,7 @@ const Wire = () => {
           </label>
         </div>
 
-        <div className={styles.input_wrapper}>
+        {/* <div className={styles.input_wrapper}>
           <label htmlFor='currency'>
             Currency: <br />
             <select
@@ -492,8 +499,8 @@ const Wire = () => {
               ''
             )}
           </label>
-        </div>
-        <div className={styles.input_wrapper}>
+        </div> */}
+        {/* <div className={styles.input_wrapper}>
           <label htmlFor='country'>
             Country: <br />
             <select
@@ -518,12 +525,12 @@ const Wire = () => {
               ''
             )}
           </label>
-        </div>
+        </div> */}
         <div className={styles.input_wrapper}>
           <label htmlFor='routingNumber'>
             Routing Number: <br />
             <input
-              type='number'
+              type='text'
               name='routingNumber'
               placeholder='enter routing number'
               value={formData?.routingNumber}
@@ -537,11 +544,11 @@ const Wire = () => {
             )}
           </label>
         </div>
-        <div className={styles.input_wrapper}>
+        {/* <div className={styles.input_wrapper}>
           <label htmlFor='swiftCode'>
             Swift Code: <br />
             <input
-              type='number'
+              type='text'
               name='swiftCode'
               placeholder='enter swift code'
               value={formData?.swiftCode}
@@ -554,13 +561,15 @@ const Wire = () => {
               ''
             )}
           </label>
-        </div>
+        </div> */}
         <div className={styles.input_wrapper}>
           <label htmlFor='transactionPin'>
             Transaction Pin: <br />
             <input
-              type='number'
               name='transactionPin'
+              type='password'
+              inputMode='numeric'
+              maxLength={4}
               placeholder='enter transaction pin'
               value={formData?.transactionPin}
               onChange={handleInputChange}
@@ -576,12 +585,13 @@ const Wire = () => {
         <div className={styles.input_wrapper}>
           <label htmlFor='description'>
             Description: <br />
-            <textarea
+            <input
+              type='text'
               name='description'
               placeholder='enter description '
               value={formData?.description}
               onChange={handleInputChange}
-            ></textarea>
+            ></input>
             <br />
             {formDataError && formData?.description?.length <= 0 ? (
               <span style={{ color: 'red' }}>* required</span>
@@ -590,51 +600,12 @@ const Wire = () => {
             )}
           </label>
         </div>
-
-        {/* <div className={styles.image__container}>
-          <label>Photograph</label>
-          <input
-            type='file'
-            id='image'
-            accept='image/*'
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  // console.log('reader', reader.result);
-                  setFormData({ ...formData, picture: reader.result });
-                };
-                if (file.type.startsWith('image/')) {
-                  reader.readAsDataURL(file);
-                } else {
-                  alert('Please upload a valid picture file.');
-                }
-              }
-            }}
-          />
-          <br />
-          {formDataError && formData?.picture?.length <= 0 ? (
-            <span style={{ color: 'red' }}>* required</span>
-          ) : (
-            ''
-          )}
-
-          {formData?.picture?.length > 0 && (
-            <img
-              src={formData?.picture}
-              alt='user picture'
-              width='300px'
-              height='400px'
-              style={{ marginTop: '20px', objectFit: 'cover' }}
-            />
-          )}
-        </div> */}
       </div>
       <br />
       <CallToAction
         loading={submitOrderIsPending}
         text='Submit'
+        progressText='submitting...'
         action={handleSubmitWithConfirmation}
       />
     </div>

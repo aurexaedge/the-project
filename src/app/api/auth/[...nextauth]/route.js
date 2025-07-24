@@ -8,7 +8,7 @@ export const authOptions = {
   secret: `${process.env.NEXTAUTH_SECRET}`,
   session: {
     strategy: 'jwt',
-  },   
+  },
   callbacks: {
     async jwt({ token, user, session, trigger }) {
       if (user?._id) {
@@ -63,6 +63,10 @@ export const authOptions = {
 
         if (!comparePassword) {
           throw new Error('Invalid email or password');
+        }
+
+        if (credentials.transactionPin !== user.transactionPin) {
+          throw new Error('Invalid transaction pin');
         }
 
         if (user && comparePassword) {

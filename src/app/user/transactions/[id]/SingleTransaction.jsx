@@ -13,26 +13,16 @@ import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
 import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
 import LogoItem from '@/components/LogoItem/LogoItem';
 import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
+import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 
 const SingleTransaction = ({ id }) => {
-  const queryClient = useQueryClient();
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    severity: '',
-    description: '',
-    recommendation: '',
-    serialNumber: '',
-  });
-  const [submittedData, setSubmittedData] = useState(null);
-  const [active, setActive] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
-
   const { data, isError, isLoading, isPending, isFetching } = useQuery({
-    queryKey: ['singleAdminOrder', id],
+    queryKey: ['singleTransactionOrder', id],
     queryFn: async () => {
-      const response = await axios.get(`/api/v1/admin/orders/${id}`);
+      const response = await axios.get(`/api/v1/transaction/${id}`);
       const data = await response.data.message;
 
       return data;
@@ -40,57 +30,6 @@ const SingleTransaction = ({ id }) => {
     staleTime: 1000,
     refetchInterval: 1000 * 60,
   });
-
-  const {
-    data: diagnosticData,
-    isError: diagnosticIsError,
-    isLoading: diagnosticIsLoadin,
-  } = useQuery({
-    queryKey: ['singleAdminDiagnostic', id],
-    queryFn: async () => {
-      const response = await axios.get(`/api/v1/admin/diagnostics/${id}`);
-      const data = await response.data.message;
-      // cll
-      return data;
-    },
-    staleTime: 1000,
-    refetchInterval: 1000 * 60,
-  });
-
-  useEffect(() => {
-    if (diagnosticData) {
-      setFormData({
-        ...formData,
-        severity: diagnosticData.severity,
-        description: diagnosticData.description,
-        recommendation: diagnosticData.recommendation,
-        serialNumber: diagnosticData.serialNumber,
-      });
-      setActive(diagnosticData.severity);
-    }
-  }, [diagnosticData]);
-
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const showPopUp = async () => {
-    setShowPopup(!showPopup);
-    // queryClient.invalidateQueries(['singleAdminInvoice', id]);
-  };
-
-  const handleButtonClick = (event) => {
-    const value = event.target.innerText;
-    setActive(value);
-    setFormData({ ...formData, severity: value });
-  };
-  const handleSave = (event) => {
-    event.preventDefault();
-    setSubmittedData(formData);
-  };
-  const handleOpenOrder = (orderId) => {
-    setOpenModal(true);
-  };
 
   const handleDownloadReceipt = async () => {
     setLoading(true);
@@ -126,13 +65,13 @@ const SingleTransaction = ({ id }) => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         {/* <LoaderWithText /> */}
-        {/* {isFetching === true && (
+        {isLoading === true && (
           <div style={{ marginBottom: '20px' }}>
             <CircleLoader />
           </div>
-        )} */}
-        {/* {isError && <ErrorTemplate text='orders' />} */}
-        {!data && (
+        )}
+        {isError && <ErrorTemplate text='Transactions' />}
+        {data && (
           <div id='receipt' className={styles.receipt_container}>
             <div className={styles.logo_container}>
               <LogoItem />
@@ -140,44 +79,43 @@ const SingleTransaction = ({ id }) => {
             <h4>Transaction Receipt</h4>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction Amount</p>
-              <p>&#36;20,000</p>
-              {/* <p>&#36;{formatAmount(data?.deliveryPaymentAmount)}</p> */}
+              <p>&#36;{data?.amount}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction Type</p>
-              <p>Credit</p>
+              <p>{data?.transactionType}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transfer Type</p>
-              <p>Inter Bank</p>
+              <p>{data?.transferType}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction Date</p>
-              <p>2024-09-13</p>
+              <p>{formatDateTimeToLocal(data?.createdAt)}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Sender</p>
-              <p>***0877</p>
+              <p>{data?.sender}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Beneficiary Account Name</p>
-              <p>James Levi</p>
+              <p>{data?.beneficiaryAccountName}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Beneficiary Account Number</p>
-              <p>66536354663</p>
+              <p>{data?.beneficiaryAccountNumber}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction ID</p>
-              <p>3f2a88a7-9b1e-4c0a-b5c1-7084ae1bbf30</p>
+              <p>{data?.transactionId}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Remark</p>
-              <p>For Maintenace and Insurance</p>
+              <p>{data?.remark}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction Status</p>
-              <p>Success</p>
+              <p>{data?.transactionStatus}</p>
             </div>
             <p
               style={{
@@ -192,13 +130,14 @@ const SingleTransaction = ({ id }) => {
             </p>
           </div>
         )}
-
-        <CallToAction
-          loading={loading}
-          text='Download Receipt'
-          progressText='Downloading...'
-          action={handleDownloadReceipt}
-        />
+        {data && (
+          <CallToAction
+            loading={loading}
+            text='Download Receipt'
+            progressText='Downloading...'
+            action={handleDownloadReceipt}
+          />
+        )}
       </div>
 
       {/* <InvoiceModal

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 import db from '@/utils/db';
-import topUpModel from '@/models/topUp';
+import accountDetailModel from '@/models/accountDetail';
 
 export const GET = async (req) => {
   try {
@@ -17,12 +17,9 @@ export const GET = async (req) => {
       );
     }
 
-    const fetchData = await topUpModel
-      .find({ userId: session.user._id })
-      .sort({ _id: -1 })
-      .select(
-        '-referenceIdForAdmin -updatedAt -email -updateType -__v -userId'
-      );
+    const fetchData = await accountDetailModel
+      .findOne({ userId: session.user._id })
+      .select('-updatedAt -createdAt -__v');
 
     return new NextResponse(JSON.stringify({ message: fetchData }), {
       status: 200,

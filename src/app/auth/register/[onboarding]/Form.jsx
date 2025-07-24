@@ -53,35 +53,33 @@ const CompleteRegistration = () => {
     num6: '',
   });
 
-  useEffect(() => {
-    inputRefs[0].current?.focus();
-  }, []);
-
-  const handleKeyDown = (e, index) => {
-    if (
-      e.key === 'Backspace' &&
-      formData[`num${index + 1}`] === '' &&
-      index > 0
-    ) {
-      inputRefs[index - 1].current.focus();
-    }
-  };
+  // useEffect(() => {
+  //   inputRefs[0].current?.focus();
+  // }, []);
 
   const handleInputChange = (e, index) => {
-    let inputValue = e.target.value.replace(/\D/, '');
+    let inputValue = e.target.value.replace(/\D/, ''); // allow only digits
+
+    // Allow only a single character
     if (inputValue.length > 1) {
       inputValue = inputValue.slice(0, 1);
     }
 
-    const inputRef = inputRefs[index];
-    const nextInputRef = inputRefs[index + 1];
+    // Update the current field
+    setFormData((prev) => ({
+      ...prev,
+      [`num${index + 1}`]: inputValue,
+    }));
 
-    setFormData({ ...formData, [`num${index + 1}`]: inputValue });
+    // Auto move to next input if not last and input is valid
+    if (inputValue && index < inputRefs.length - 1) {
+      inputRefs[index + 1].current.focus();
+    }
+  };
 
-    if (inputValue.length === 1 && index < 5) {
-      nextInputRef.current.focus();
-    } else if (inputValue.length === 0 && e.key === 'Backspace' && index > 0) {
-      inputRef.current.focus();
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !formData[`num${index + 1}`] && index > 0) {
+      inputRefs[index - 1].current.focus();
     }
   };
 
@@ -159,9 +157,6 @@ const CompleteRegistration = () => {
     }
   };
 
-  const loginHandler = () => {
-    router.push('/auth/login');
-  };
   return (
     <main className={styles.login_container}>
       <div onClick={() => router.push('/')} className={styles.logo_item}>
@@ -188,11 +183,11 @@ const CompleteRegistration = () => {
               <label htmlFor='num1'>
                 {/* num1: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num1'
-                  inputMode='numeric'
                   className={styles.form_control}
                   value={formData.num1}
+                  inputMode='numeric'
                   onChange={(e) => handleInputChange(e, 0)}
                   onKeyDown={(e) => handleKeyDown(e, 0)}
                   ref={inputRefs[0]}
@@ -203,7 +198,7 @@ const CompleteRegistration = () => {
               <label htmlFor='num2'>
                 {/* num2: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num2'
                   inputMode='numeric'
                   className={styles.form_control}
@@ -218,7 +213,7 @@ const CompleteRegistration = () => {
               <label htmlFor='num3'>
                 {/* num3: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num3'
                   inputMode='numeric'
                   className={styles.form_control}
@@ -233,7 +228,7 @@ const CompleteRegistration = () => {
               <label htmlFor='num4'>
                 {/* num4: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num4'
                   inputMode='numeric'
                   className={styles.form_control}
@@ -248,7 +243,7 @@ const CompleteRegistration = () => {
               <label htmlFor='num5'>
                 {/* num5: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num5'
                   inputMode='numeric'
                   className={styles.form_control}
@@ -263,7 +258,7 @@ const CompleteRegistration = () => {
               <label htmlFor='num6'>
                 {/* num6: <br /> */}
                 <input
-                  type='tel'
+                  type='password'
                   name='num6'
                   inputMode='numeric'
                   className={styles.form_control}

@@ -52,7 +52,7 @@ const serviceData = [
     id: 5,
     title: 'Transactions',
     description: 'Track every transaction',
-    url: '/user/admin/transactions/transfers',
+    url: '/user/transactions/s',
     icon: <GiHistogram size={17} />,
     backgroundColor: '#FF9770',
   },

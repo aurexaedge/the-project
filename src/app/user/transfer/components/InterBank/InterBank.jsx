@@ -40,12 +40,14 @@ const InterBank = () => {
   const [formDataError, setFormDataError] = useState(false);
   const [formData, setFormData] = useState({
     accountType: '',
-    aurexaBankAccountName: '',
-    aurexaBankAccountNumber: '',
+    beneficiaryAccountName: '',
+    beneficiaryAccountNumber: '',
     amount: '',
     transactionPin: '',
     description: '',
-    picture: '',
+    transactionType: 'Debit',
+    transferType: 'Inter Bank',
+    bankName: 'Aurexa Ege Bank',
   });
   const handleInputChange = (event) => {
     const value =
@@ -84,40 +86,36 @@ const InterBank = () => {
       mutationFn: async () => {
         const requiredFields = [
           'accountType',
-          'aurexaBankAccountNumber',
+          'beneficiaryAccountNumber',
           'amount',
           'transactionPin',
           'description',
-          'picture',
         ];
 
         const hasEmptyFields = requiredFields.some(
           (field) => formData[field].length === 0
         );
 
-        if (hasEmptyFields) {
-          setFormDataError(true);
-          throw new Error('Validation Error: All fields must be completed');
-        }
+        // if (hasEmptyFields) {
+        //   setFormDataError(true);
+        //   throw new Error('Validation Error: All fields must be completed');
+        // }
 
-        const res = await axios.post(
-          `/api/v1/nin-services/new-enrollment`,
-          formData
-        );
+        const res = await axios.post(`/api/v1/transaction`, formData);
         return res.data;
       },
 
       onSuccess: async (res) => {
-        setFormData({
-          accountType: '',
-          aurexaBankAccountName: '',
-          aurexaBankAccountNumber: '',
-          amount: '',
-          transactionPin: '',
-          description: '',
-          picture: '',
-        });
-        toast.success(res?.message);
+        // setFormData({
+        //   accountType: '',
+        //   beneficiaryAccountName: '',
+        //   beneficiaryAccountNumber: '',
+        //   amount: '',
+        //   transactionPin: '',
+        //   description: '',
+        // });
+        router.push(`/user/transactions/${res?.message}`);
+        toast.success('transfer successful');
         setFormDataError(false);
         queryClient.invalidateQueries(['fetchWallet']);
       },
@@ -146,17 +144,17 @@ const InterBank = () => {
       </div>
       <div className={styles.login_wrapper}>
         <div className={styles.input_wrapper}>
-          <label htmlFor='aurexaBankAccountName'>
+          <label htmlFor='beneficiaryAccountName'>
             Aurexa Edge Bank Account Name: <br />
             <input
               type='text'
-              name='EdgeBankAccountName'
+              name='beneficiaryAccountName'
               placeholder='Steve Grey'
-              value={formData?.aurexaBankAccountName}
+              value={formData?.beneficiaryAccountName}
               onChange={handleInputChange}
             />
             <br />
-            {formDataError && formData?.aurexaBankAccountName?.length <= 0 ? (
+            {formDataError && formData?.beneficiaryAccountName?.length <= 0 ? (
               <span style={{ color: 'red' }}>* required</span>
             ) : (
               ''
@@ -164,17 +162,18 @@ const InterBank = () => {
           </label>
         </div>
         <div className={styles.input_wrapper}>
-          <label htmlFor='aurexaBankAccountNumber'>
+          <label htmlFor='beneficiaryAccountNumber'>
             Aurexa Egbe Bank Account Number: <br />
             <input
               type='number'
-              name='EdgeBankAccountNumber'
+              name='beneficiaryAccountNumber'
               placeholder='97001299833'
-              value={formData?.aurexaBankAccountNumber}
+              value={formData?.beneficiaryAccountNumber}
               onChange={handleInputChange}
             />
             <br />
-            {formDataError && formData?.aurexaBankAccountNumber?.length <= 0 ? (
+            {formDataError &&
+            formData?.beneficiaryAccountNumber?.length <= 0 ? (
               <span style={{ color: 'red' }}>* required</span>
             ) : (
               ''
@@ -232,7 +231,9 @@ const InterBank = () => {
           <label htmlFor='transactionPin'>
             Transaction Pin: <br />
             <input
-              type='number'
+              type='password'
+              inputMode='numeric'
+              maxLength={4}
               name='transactionPin'
               placeholder='enter transaction pin'
               value={formData?.transactionPin}
@@ -249,12 +250,13 @@ const InterBank = () => {
         <div className={styles.input_wrapper}>
           <label htmlFor='description'>
             Description: <br />
-            <textarea
+            <input
               name='description'
+              type='text'
               placeholder='enter description '
               value={formData?.description}
               onChange={handleInputChange}
-            ></textarea>
+            ></input>
             <br />
             {formDataError && formData?.description?.length <= 0 ? (
               <span style={{ color: 'red' }}>* required</span>
@@ -263,51 +265,12 @@ const InterBank = () => {
             )}
           </label>
         </div>
-
-        {/* <div className={styles.image__container}>
-          <label>Photograph</label>
-          <input
-            type='file'
-            id='image'
-            accept='image/*'
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  // console.log('reader', reader.result);
-                  setFormData({ ...formData, picture: reader.result });
-                };
-                if (file.type.startsWith('image/')) {
-                  reader.readAsDataURL(file);
-                } else {
-                  alert('Please upload a valid picture file.');
-                }
-              }
-            }}
-          />
-          <br />
-          {formDataError && formData?.picture?.length <= 0 ? (
-            <span style={{ color: 'red' }}>* required</span>
-          ) : (
-            ''
-          )}
-
-          {formData?.picture?.length > 0 && (
-            <img
-              src={formData?.picture}
-              alt='user picture'
-              width='300px'
-              height='400px'
-              style={{ marginTop: '20px', objectFit: 'cover' }}
-            />
-          )}
-        </div> */}
       </div>
       <br />
       <CallToAction
         loading={submitOrderIsPending}
         text='Submit'
+        progressText='submitting...'
         action={handleSubmitWithConfirmation}
       />
     </div>

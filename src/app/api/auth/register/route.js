@@ -12,9 +12,6 @@ import { generateRandomNumber } from '@/utils/generateUserName';
 import { v4 as uuidv4 } from 'uuid';
 import { generateBankDetails } from '@/utils/generateBankDetails';
 
-const RESEND_API_KEY = `${process.env.RESEND_API_KEY}`;
-const resend = new Resend(RESEND_API_KEY);
-
 export const POST = async (res) => {
   const {
     username,
@@ -116,12 +113,12 @@ export const POST = async (res) => {
       accountType,
     });
 
-    // if (newUser) {
-    //   await tokenModel.deleteMany({
-    //     email: email,
-    //     purpose: 'email verification',
-    //   });
-    // }
+    if (newUser) {
+      await tokenModel.deleteMany({
+        email: email,
+        purpose: 'email verification',
+      });
+    }
 
     //!create wallet balance
     await userWalletModel.create({

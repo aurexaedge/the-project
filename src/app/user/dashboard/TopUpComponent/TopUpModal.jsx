@@ -3,30 +3,18 @@ import React, { useState, useRef } from 'react';
 import styles from './TopUpModal.module.css';
 import { MdOutlineCancel } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
-import useFetchData from '@/hooks/useFetchData';
-import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { BiCopy } from 'react-icons/bi';
-import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
-import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
-import { GoDotFill } from 'react-icons/go';
 import { toast } from 'sonner';
 import { BsBank2 } from 'react-icons/bs';
+import useFetchData from '@/hooks/useFetchData';
 
 const TopUpModal = ({ setShowPopup, showPopup }) => {
   const router = useRouter();
 
   const ref = useRef(null);
 
-  const handleModalPopUp = () => {
-    setShowPopup(!showPopup);
-    setLoading(false);
-  };
-
-  //! topup logic
-  const queryClient = useQueryClient();
   const {
     data,
     isError,
@@ -35,92 +23,14 @@ const TopUpModal = ({ setShowPopup, showPopup }) => {
     isFetching,
   } = useFetchData({
     queryKey: ['fetchAccountDetails'],
-    endpoint: '/api/v1/account/user/create-user',
+    endpoint: '/api/v1/account/',
   });
 
-  const {
-    data: topUpData,
-    isError: topUpIsError,
-    isLoading: topUpIsLoadingData,
-    isPending: topUpIsPending,
-  } = useFetchData({
-    queryKey: ['fetchTopUpHistory'],
-    endpoint: '/api/v1/account/top-ups',
-  });
-
-  const [formDataError, setFormDataError] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const [loadingCreateAccount, setLoadingCreateAccount] = useState(false);
-  const [loadingPayWithCard, setLoadingPayWithCard] = useState(false);
-
-  const [formData, setFormData] = useState({
-    nin: '',
-    amount: '',
-    firstName: '',
-    lastName: '',
-  });
-  const handleInputChange = (event) => {
-    const value =
-      event.target.type === 'checkbox'
-        ? event.target.checked
-        : event.target.value;
-    setFormData({
-      ...formData,
-      [event.target.name]: value?.trim(),
-    });
+  const handleModalPopUp = () => {
+    setShowPopup(!showPopup);
   };
 
-  const { mutate: handleCreateAccount, isPending: submitOrderIsPending } =
-    useMutation({
-      /*
-        mutationFn: async () => {
-          const res = await axios.post(
-            `/api/v1/account/user/create-user`,
-            formData
-          );
-          return res.data;
-        },
-        */
-      mutationFn: async (endpoint) => {
-        const res = await axios.post(endpoint, formData);
-        return res.data;
-      },
-
-      onSuccess: async (res) => {
-        setFormData({
-          nin: '',
-          amount: '',
-          firstName: '',
-          lastName: '',
-        });
-
-        if (res?.message?.isPayValidated) {
-          let url = res.message.checkoutUrl;
-          window.location.href = url;
-          // window.open(url, '_blank');
-        } else {
-          toast.success(res?.message);
-        }
-
-        setFormDataError(false);
-        queryClient.invalidateQueries(['fetchWallet']);
-        queryClient.invalidateQueries(['fetchAccountDetails']);
-      },
-      onError: (error) => {
-        console.log(error);
-        toast.error(error?.response?.data?.message || error.message);
-      },
-
-      onSettled: () => {
-        // Reset both loading states after the mutation is completed
-        setLoadingCreateAccount(false);
-        setLoadingPayWithCard(false);
-      },
-    });
-
   const [isLinkCopied, setIsLinkCopied] = useState(false);
-  // const [showPopup, setShowPopup] = useState(false);
 
   const handleCopyReferralLink = async () => {
     setIsLinkCopied(true);
@@ -163,16 +73,14 @@ const TopUpModal = ({ setShowPopup, showPopup }) => {
                     <br />
                     <span>
                       {' '}
-                      <BsBank2 /> Transfer To Aurexa Edge Account
+                      <BsBank2 /> {data?.bankName}
                     </span>
                   </div>
 
                   <div className={styles.accountDetails}>
                     <div className={styles.account_inner}>
                       <p>Account Name:</p>
-                      <p>
-                        MFY / datafarm software solutions - {data?.accountName}
-                      </p>
+                      <p>{data?.accountName}</p>
                     </div>
                     <div className={styles.account_inner}>
                       <p>Account Number:</p>
@@ -198,6 +106,14 @@ const TopUpModal = ({ setShowPopup, showPopup }) => {
                     <div className={styles.account_inner}>
                       <p>Bank Name:</p>
                       <p>{data?.bankName}</p>
+                    </div>
+                    <div className={styles.account_inner}>
+                      <p>Account Type:</p>
+                      <p>{data?.accountType}</p>
+                    </div>
+                    <div className={styles.account_inner}>
+                      <p>Routing Number:</p>
+                      <p>{data?.routingNumber}</p>
                     </div>
                   </div>
 

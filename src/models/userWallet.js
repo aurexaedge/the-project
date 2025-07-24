@@ -7,8 +7,8 @@ const userWalletSchema = new mongoose.Schema(
     accountBalance: { type: String, default: '0' },
     pendingBalance: { type: String, default: '0' },
     accountType: { type: String, default: 'customer' },
-    lockAccountOnTransfer: { type: Boolean, default: false },
-    isAccountLocked: { type: Boolean, default: false },
+    lockAccountOnTransfer: { type: Boolean, default: true },
+    isAccountLocked: { type: Boolean, default: true },
   },
   {
     timestamps: true,
