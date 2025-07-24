@@ -11,6 +11,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useFetchData from '@/hooks/useFetchData';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
 import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
+import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
+import TopUpModal from '@/app/user/dashboard/TopUpComponent/TopUpModal';
+import ErrorModal from '../ErrorModal/ErrorModal';
 const currencies = [
   {
     name: 'US Dollar',
@@ -256,6 +259,7 @@ const accountTypes = [
 const Wire = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [openModal, setOpenModal] = useState(false);
 
   const [formDataError, setFormDataError] = useState(false);
   const [formData, setFormData] = useState({
@@ -344,11 +348,19 @@ const Wire = () => {
           description: '',
           picture: '',
         });
-        toast.success(res?.message);
+        router.push(`/user/transactions/${res?.message}`);
+        toast.success('transfer successful');
         setFormDataError(false);
+        setOpenModal(true);
         queryClient.invalidateQueries(['fetchWallet']);
       },
       onError: (error) => {
+        if (
+          error?.response?.data?.message ===
+          'Unauthorised activity discovered, kindly contact support to resolve issue'
+        ) {
+          showPopUp();
+        }
         console.log(error);
         toast.error(error?.response?.data?.message || error.message);
       },
@@ -363,6 +375,12 @@ const Wire = () => {
       // return;
       handleSubmitOrder();
     }
+  };
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const showPopUp = () => {
+    setShowPopup(!showPopup);
   };
   return (
     <div className={styles.nin_container}>
@@ -608,6 +626,8 @@ const Wire = () => {
         progressText='submitting...'
         action={handleSubmitWithConfirmation}
       />
+      <ErrorModal setShowPopup={setShowPopup} showPopup={showPopup} />
+      {openModal && <OverLayLoader />}
     </div>
   );
 };

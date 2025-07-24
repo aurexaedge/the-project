@@ -8,9 +8,10 @@ import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import axios from 'axios';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useFetchData from '@/hooks/useFetchData';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
 import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
+import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
+import ErrorModal from '../ErrorModal/ErrorModal';
 
 const accountTypes = [
   'Personal (Savings)',
@@ -23,19 +24,9 @@ const accountTypes = [
 ];
 
 const InterBank = () => {
-  const {
-    data,
-    isError,
-    isLoading: isLoadingData,
-    isPending,
-    isFetching,
-  } = useFetchData({
-    queryKey: ['fetchServicePrice'],
-    endpoint: '/api/v1/admin/services/',
-  });
-
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [openModal, setOpenModal] = useState(false);
 
   const [formDataError, setFormDataError] = useState(false);
   const [formData, setFormData] = useState({
@@ -96,30 +87,37 @@ const InterBank = () => {
           (field) => formData[field].length === 0
         );
 
-        // if (hasEmptyFields) {
-        //   setFormDataError(true);
-        //   throw new Error('Validation Error: All fields must be completed');
-        // }
+        if (hasEmptyFields) {
+          setFormDataError(true);
+          throw new Error('Validation Error: All fields must be completed');
+        }
 
         const res = await axios.post(`/api/v1/transaction`, formData);
         return res.data;
       },
 
       onSuccess: async (res) => {
-        // setFormData({
-        //   accountType: '',
-        //   beneficiaryAccountName: '',
-        //   beneficiaryAccountNumber: '',
-        //   amount: '',
-        //   transactionPin: '',
-        //   description: '',
-        // });
+        setFormData({
+          accountType: '',
+          beneficiaryAccountName: '',
+          beneficiaryAccountNumber: '',
+          amount: '',
+          transactionPin: '',
+          description: '',
+        });
         router.push(`/user/transactions/${res?.message}`);
         toast.success('transfer successful');
+        setOpenModal(true);
         setFormDataError(false);
         queryClient.invalidateQueries(['fetchWallet']);
       },
       onError: (error) => {
+        if (
+          error?.response?.data?.message ===
+          'Unauthorised activity discovered, kindly contact support to resolve issue'
+        ) {
+          showPopUp();
+        }
         console.log(error);
         toast.error(error?.response?.data?.message || error.message);
       },
@@ -134,6 +132,12 @@ const InterBank = () => {
       // return;
       handleSubmitOrder();
     }
+  };
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const showPopUp = () => {
+    setShowPopup(!showPopup);
   };
   return (
     <div className={styles.nin_container}>
@@ -273,6 +277,8 @@ const InterBank = () => {
         progressText='submitting...'
         action={handleSubmitWithConfirmation}
       />
+      <ErrorModal setShowPopup={setShowPopup} showPopup={showPopup} />
+      {openModal && <OverLayLoader />}
     </div>
   );
 };

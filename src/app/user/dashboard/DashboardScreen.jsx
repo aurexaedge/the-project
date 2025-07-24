@@ -55,8 +55,9 @@ const DashboardScreen = ({ referral }) => {
   };
 
   const [isAccountCreated, setIsAccountCreated] = useState(false);
+
   const [showPopup, setShowPopup] = useState(false);
-  const showPopUp = async () => {
+  const showPopUp = () => {
     setShowPopup(!showPopup);
   };
 
