@@ -148,7 +148,6 @@ export default function LayoutScreen({ children }) {
           <h4>
             <BsPerson className={styles.profile_icon} />
           </h4>
-          s
           <div className={styles.user_balance}>
             {isLoadingData ? (
               <CircleLoader />
