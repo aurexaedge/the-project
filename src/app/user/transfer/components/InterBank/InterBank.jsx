@@ -39,20 +39,6 @@ const InterBank = () => {
     bankName: 'Aurexa Ege Bank',
   });
 
-  useEffect(() => {
-    setFormData({
-      accountType: '',
-      beneficiaryAccountName: '',
-      beneficiaryAccountNumber: '',
-      amount: '',
-      transactionPin: '',
-      description: '',
-      transactionType: 'Debit',
-      transferType: 'Inter Bank',
-      bankName: 'Aurexa Ege Bank',
-    });
-  }, []);
-
   const handleInputChange = (event) => {
     const value =
       event.target.type === 'checkbox'
