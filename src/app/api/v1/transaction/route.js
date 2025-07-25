@@ -59,12 +59,6 @@ export const POST = async (req) => {
     if (Number(user.accountBalance) < Number(formattedAmount)) {
       return response(500, 'Account balance is low');
     }
-    if (user.isAccountLocked) {
-      return response(
-        500,
-        'Unauthorised activity discovered, kindly contact support to resolve issue'
-      );
-    }
 
     if (user.lockAccountOnTransfer) {
       user.isAccountLocked = true;
@@ -82,7 +76,6 @@ export const POST = async (req) => {
       beneficiaryAccountNumber,
       routingNumber,
       amount,
-      transactionPin,
       transactionType,
       transferType,
       sender: maskExceptLastThree(userAccount.accountNumber),
@@ -90,8 +83,8 @@ export const POST = async (req) => {
       remark: description,
       shortDescription:
         transactionType === 'Debit'
-          ? `Outgoing transfer to ${beneficiaryAccountName}`
-          : `Incoming transfer to ${beneficiaryAccountName}`,
+          ? `Outgoing payment to ${beneficiaryAccountName}`
+          : `Incoming payment to ${beneficiaryAccountName}`,
       transactionStatus: 'success',
     });
 

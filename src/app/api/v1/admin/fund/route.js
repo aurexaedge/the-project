@@ -26,81 +26,51 @@ function maskExceptLastThree(value) {
 export const POST = async (req) => {
   try {
     await db.connect();
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return new NextResponse(JSON.stringify({ message: 'Unathorized' }), {
-        status: 400,
-      });
-    }
+    // if (!session || (session && !session.user.superUser)) {
+    //     return new NextResponse(
+    //       JSON.stringify({ message: 'something went wrong' }),
+    //       { status: 400 }
+    //     );
+    //   }
 
-    const {
-      accountType,
-      bankName,
-      beneficiaryAccountName,
-      beneficiaryAccountNumber,
-      routingNumber,
-      amount,
-      transactionPin,
-      description,
-      transactionType,
-      transferType,
-    } = await req.json();
+    const { amount, userId } = await req.json();
 
-    const user = await userWalletModel.findOne({ userId: session.user._id });
+    const user = await userWalletModel.findOne({ userId });
 
-    const userData = await userModel.findById(session.user._id);
+    const userData = await userModel.findById(userId);
 
     const userAccount = await accountDetailModel.findOne({
-      userId: session.user._id,
+      userId,
     });
 
     const formattedAmount = returnFormattedAmount(amount);
 
-    if (Number(user.accountBalance) < Number(formattedAmount)) {
-      return response(500, 'Account balance is low');
-    }
-    if (user.isAccountLocked) {
-      return response(
-        500,
-        'Unauthorised activity discovered, kindly contact support to resolve issue'
-      );
-    }
-
-    if (user.lockAccountOnTransfer) {
-      user.isAccountLocked = true;
-    }
-
-    if (userData.transactionPin !== transactionPin) {
-      return response(500, 'Incorrect transaction pin');
-    }
-
     const userTransaction = await transactionModel.create({
-      userId: session.user._id,
-      accountType,
-      bankName,
-      beneficiaryAccountName,
-      beneficiaryAccountNumber,
-      routingNumber,
+      userId: userId,
+      accountType: userAccount.accountType,
+      bankName: userAccount.bankName,
+      beneficiaryAccountName: userAccount.accountName,
+      beneficiaryAccountNumber: userAccount.accountNumber,
+      routingNumber: userAccount.routingNumber,
       amount,
-      transactionPin,
-      transactionType,
-      transferType,
+      transactionType: 'Credit',
+      transferType: 'Credit',
       sender: maskExceptLastThree(userAccount.accountNumber),
       transactionId: uuidv4(),
-      remark: description,
-      shortDescription:
-        transactionType === 'Debit'
-          ? `Outgoing transfer to ${beneficiaryAccountName}`
-          : `Incoming transfer to ${beneficiaryAccountName}`,
+      remark: 'Deposit',
+      shortDescription: `Incoming transfer to ${userAccount.accountName}`,
       transactionStatus: 'success',
     });
 
-    let newBalance = Number(user.accountBalance) - Number(formattedAmount);
+    let newBalance = Number(user.accountBalance) + Number(formattedAmount);
     user.accountBalance = newBalance;
 
     await user.save();
 
-    return response(200, userTransaction.transactionId);
+    return response(
+      200,
+      `Transfer to ${userTransaction.transactionId} was suuceeful`
+    );
   } catch (error) {
     console.log(error);
     return response(500, 'something went wrong');
@@ -120,7 +90,7 @@ export const GET = async (req) => {
     }
 
     const fetchData = await transactionModel
-      .find({ userId: session.user._id })
+      .find({ userId: userId })
       .sort({ _id: -1 })
       .select('-updatedAt -__v -userId');
 
