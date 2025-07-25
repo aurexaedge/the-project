@@ -219,7 +219,7 @@ export default function LayoutScreen({ children }) {
               </Link>
             );
           })}
-          {session?.user?.superUser === true && (
+          {/* {session?.user?.superUser === true && (
             <Link
               href='/user/admin/transactions/transfers'
               onClick={closeMenu}
@@ -228,7 +228,7 @@ export default function LayoutScreen({ children }) {
               <RiAdminLine className={styles.item_icon} />
               Admin
             </Link>
-          )}
+          )} */}
           <button onClick={logoutClickHandler} className={styles.user_logout}>
             <FiLogOut className={styles.logout_icon} />
             Logout

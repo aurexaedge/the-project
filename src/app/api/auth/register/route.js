@@ -6,10 +6,6 @@ import userWalletModel from '@/models/userWallet';
 import tokenModel from '@/models/token';
 import accountDetailModel from '@/models/accountDetail';
 
-import { Resend } from 'resend';
-import crypto from 'crypto';
-import { generateRandomNumber } from '@/utils/generateUserName';
-import { v4 as uuidv4 } from 'uuid';
 import { generateBankDetails } from '@/utils/generateBankDetails';
 
 export const POST = async (res) => {

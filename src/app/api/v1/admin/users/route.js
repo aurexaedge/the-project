@@ -1,35 +1,119 @@
 import { NextResponse } from 'next/server';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getServerSession } from 'next-auth';
+import bcryptjs from 'bcryptjs';
+import userModel from '@/models/user';
 import db from '@/utils/db';
-import { response } from '@/utils/handleResponse';
-
 import userWalletModel from '@/models/userWallet';
+import accountDetailModel from '@/models/accountDetail';
 
-export const GET = async (req) => {
+import { generateBankDetails } from '@/utils/generateBankDetails';
+
+//! create user
+export const POST = async (res) => {
+  const {
+    username,
+    phoneNumber,
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    transactionPin,
+    accountType,
+  } = await res.json();
+
+  if (
+    !username ||
+    !email ||
+    !email.includes('@') ||
+    !password ||
+    !firstName ||
+    !lastName ||
+    !transactionPin ||
+    !accountType ||
+    !confirmPassword
+  ) {
+    return new NextResponse(JSON.stringify({ message: 'Validation error' }), {
+      status: 409,
+    });
+  }
+
   try {
     await db.connect();
-    const session = await getServerSession(authOptions);
 
-    if (!session || (session && !session.user.superUser)) {
+    const existingUser = await userModel.findOne({ email: email.trim() });
+
+    const existingUsername = await userModel.findOne({
+      username: username.trim(),
+    });
+
+    if (existingUsername) {
       return new NextResponse(
-        JSON.stringify({ message: 'something went wrong' }),
-        { status: 400 }
+        JSON.stringify({ message: 'Username already exists!' }),
+        {
+          status: 409,
+        }
       );
     }
 
-    const users = await userWalletModel
-      .find({})
-      .sort({ _id: -1 })
-      .populate({
-        path: 'userId',
-        select: 'email fullName -_id',
-      })
-      .select('-accountType -updatedAt -__v');
+    if (existingUser) {
+      return new NextResponse(
+        JSON.stringify({ message: 'Email already exists!' }),
+        {
+          status: 409,
+        }
+      );
+    }
 
-    return response(200, users);
+    if (password !== confirmPassword) {
+      return new NextResponse(
+        JSON.stringify({ message: 'Passwords must match' }),
+        {
+          status: 409,
+        }
+      );
+    }
+
+    const newUser = await userModel.create({
+      username,
+      phoneNumber,
+      email,
+      password: bcryptjs.hashSync(password),
+      superUser: false,
+      firstName,
+      lastName,
+      transactionPin,
+      accountType,
+    });
+
+    //!create wallet balance
+    await userWalletModel.create({
+      userId: newUser?._id,
+      accountType,
+    });
+
+    //! create account details
+    const { accountNumber, routingNumber } = generateBankDetails();
+    await accountDetailModel.create({
+      userId: newUser?._id,
+      accountType,
+      accountName: `${firstName} ${lastName}`,
+      bankName: 'Aurexa Edge Bank',
+      routingNumber,
+      accountNumber,
+    });
+
+    return new NextResponse(
+      JSON.stringify({
+        message: 'registration successful',
+      }),
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
-    console.log(error);
-    return response(500, 'something went wrong');
+    console.log('err', error);
+    return new NextResponse(JSON.stringify({ message: error.message }), {
+      status: 500,
+    });
   }
 };

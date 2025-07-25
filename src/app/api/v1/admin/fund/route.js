@@ -23,30 +23,42 @@ function maskExceptLastThree(value) {
   return maskedPart + visiblePart;
 }
 
+// ✅ POST: Accept JSON or x-www-form-urlencoded
 export const POST = async (req) => {
   try {
     await db.connect();
-    // if (!session || (session && !session.user.superUser)) {
-    //     return new NextResponse(
-    //       JSON.stringify({ message: 'something went wrong' }),
-    //       { status: 400 }
-    //     );
-    //   }
 
-    const { amount, userId } = await req.json();
+    const contentType = req.headers.get('content-type');
+    let body;
+
+    if (contentType?.includes('application/json')) {
+      body = await req.json();
+    } else if (contentType?.includes('application/x-www-form-urlencoded')) {
+      const raw = await req.text();
+      const params = new URLSearchParams(raw);
+      body = Object.fromEntries(params.entries());
+    } else {
+      return response(400, 'Unsupported content type');
+    }
+
+    const { amount, userId } = body;
+
+    if (!amount || !userId) {
+      return response(400, 'Missing required fields');
+    }
 
     const user = await userWalletModel.findOne({ userId });
-
     const userData = await userModel.findById(userId);
+    const userAccount = await accountDetailModel.findOne({ userId });
 
-    const userAccount = await accountDetailModel.findOne({
-      userId,
-    });
+    if (!user || !userData || !userAccount) {
+      return response(404, 'User or account details not found');
+    }
 
     const formattedAmount = returnFormattedAmount(amount);
 
     const userTransaction = await transactionModel.create({
-      userId: userId,
+      userId,
       accountType: userAccount.accountType,
       bankName: userAccount.bankName,
       beneficiaryAccountName: userAccount.accountName,
@@ -62,46 +74,39 @@ export const POST = async (req) => {
       transactionStatus: 'success',
     });
 
-    let newBalance = Number(user.accountBalance) + Number(formattedAmount);
-    user.accountBalance = newBalance;
-
+    user.accountBalance = Number(user.accountBalance) + Number(formattedAmount);
     await user.save();
 
     return response(
       200,
-      `Transfer to ${userTransaction.transactionId} was suuceeful`
+      `Transfer to ${userTransaction.transactionId} was successful`
     );
   } catch (error) {
-    console.log(error);
-    return response(500, 'something went wrong');
+    console.error('POST error:', error);
+    return response(500, 'Something went wrong');
   }
 };
 
+// ✅ GET (minor fixes: use session.user._id and better error checks)
 export const GET = async (req) => {
   try {
     await db.connect();
-
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-      return new NextResponse(JSON.stringify({ message: 'Unauthorised' }), {
-        status: 400,
-      });
+    if (!session || !session.user?.id) {
+      return response(401, 'Unauthorised');
     }
 
+    const userId = session.user.id;
+
     const fetchData = await transactionModel
-      .find({ userId: userId })
+      .find({ userId })
       .sort({ _id: -1 })
       .select('-updatedAt -__v -userId');
 
-    return new NextResponse(JSON.stringify({ message: fetchData }), {
-      status: 200,
-    });
+    return NextResponse.json({ message: fetchData }, { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new NextResponse(
-      JSON.stringify({ message: 'something went wrong' }),
-      { status: 400 }
-    );
+    console.error('GET error:', error);
+    return response(500, 'Something went wrong');
   }
 };
