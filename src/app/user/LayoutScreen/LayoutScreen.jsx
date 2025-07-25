@@ -78,12 +78,12 @@ const menuItems = [
     menuName: 'Investment',
     iconsType: <CiBank />,
   },
-  {
-    id: 'profile',
-    url: '/user/profile',
-    menuName: 'Profile',
-    iconsType: <TbUserShield />,
-  },
+  // {
+  //   id: 'profile',
+  //   url: '/user/profile',
+  //   menuName: 'Profile',
+  //   iconsType: <TbUserShield />,
+  // },
   {
     id: 'support',
     url: '/user/support',
@@ -142,12 +142,13 @@ export default function LayoutScreen({ children }) {
       </div>
       <div className={`${styles.dashboard_topBar} ${styles.extra_menu}`}>
         <div
-          onClick={() => router.push('/user/profile')}
+          // onClick={() => router.push('/user/profile')}
           className={`${styles.user_info} ${styles.margin_top}`}
         >
           <h4>
             <BsPerson className={styles.profile_icon} />
           </h4>
+          s
           <div className={styles.user_balance}>
             {isLoadingData ? (
               <CircleLoader />
