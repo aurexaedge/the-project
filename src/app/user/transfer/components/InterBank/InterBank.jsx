@@ -169,6 +169,7 @@ const InterBank = () => {
               placeholder='Steve Grey'
               value={formData?.beneficiaryAccountName}
               onChange={handleInputChange}
+              autoComplete='off'
             />
             <br />
             {formDataError && formData?.beneficiaryAccountName?.length <= 0 ? (
@@ -187,6 +188,7 @@ const InterBank = () => {
               placeholder='97001299833'
               value={formData?.beneficiaryAccountNumber}
               onChange={handleInputChange}
+              autoComplete='off'
             />
             <br />
             {formDataError &&
@@ -207,6 +209,7 @@ const InterBank = () => {
               placeholder='enter amount'
               value={formData?.amount}
               onChange={handleAmountInputChange}
+              autoComplete='off'
             />
             <br />
             {formDataError && formData?.amount?.length <= 0 ? (
@@ -255,6 +258,7 @@ const InterBank = () => {
               placeholder='enter transaction pin'
               value={formData?.transactionPin}
               onChange={handleInputChange}
+              autoComplete='new-password'
             />
             <br />
             {formDataError && formData?.transactionPin?.length <= 0 ? (
@@ -273,6 +277,7 @@ const InterBank = () => {
               placeholder='enter description '
               value={formData?.description}
               onChange={handleInputChange}
+              autoComplete='off'
             ></input>
             <br />
             {formDataError && formData?.description?.length <= 0 ? (
