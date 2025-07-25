@@ -187,7 +187,7 @@ export default function LayoutScreen({ children }) {
             ) : (
               <>
                 <p>
-                  `${session?.user?.firstName} ${session?.user?.lastName}`
+                  {session?.user?.firstName} {session?.user?.lastName}
                 </p>
                 <span>&#36;{formatAmount(data?.accountBalance)}</span>
               </>
