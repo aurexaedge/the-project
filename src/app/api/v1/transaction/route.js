@@ -53,6 +53,7 @@ export const POST = async (req) => {
     const userAccount = await accountDetailModel.findOne({
       userId: session.user._id,
     });
+
     if (!user || !userData || !userAccount) {
       return response(404, 'User or account details not found');
     }

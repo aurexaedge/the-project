@@ -8,8 +8,6 @@ import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import axios from 'axios';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
-import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
 import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
 import ErrorModal from '../ErrorModal/ErrorModal';
 
@@ -40,6 +38,21 @@ const InterBank = () => {
     transferType: 'Inter Bank',
     bankName: 'Aurexa Ege Bank',
   });
+
+  useEffect(() => {
+    setFormData({
+      accountType: '',
+      beneficiaryAccountName: '',
+      beneficiaryAccountNumber: '',
+      amount: '',
+      transactionPin: '',
+      description: '',
+      transactionType: 'Debit',
+      transferType: 'Inter Bank',
+      bankName: 'Aurexa Ege Bank',
+    });
+  }, []);
+
   const handleInputChange = (event) => {
     const value =
       event.target.type === 'checkbox'
