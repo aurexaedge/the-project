@@ -84,8 +84,8 @@ const CompleteRegistration = () => {
   };
 
   const handleResendOtp = async () => {
-    toast.warning('App is still under construction');
-    return;
+    // toast.warning('App is still under construction');
+    // return;
 
     try {
       setLoadingLink(true);
