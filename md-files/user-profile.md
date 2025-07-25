@@ -10,36 +10,36 @@ import { response } from '@/utils/handleResponse';
 
 //! create user
 export const POST = async (reg) => {
-  const {
-    username,
-    phoneNumber,
-    email,
-    password,
-    confirmPassword,
-    firstName,
-    lastName,
-    transactionPin,
-    accountType,
-  } = await reg.json();
+const {
+username,
+phoneNumber,
+email,
+password,
+confirmPassword,
+firstName,
+lastName,
+transactionPin,
+accountType,
+} = await reg.json();
 
-  if (
-    !username ||
-    !email ||
-    !email.includes('@') ||
-    !password ||
-    !firstName ||
-    !lastName ||
-    !transactionPin ||
-    !accountType ||
-    !confirmPassword
-  ) {
-    return new NextResponse(JSON.stringify({ message: 'Validation error' }), {
-      status: 409,
-    });
-  }
+if (
+!username ||
+!email ||
+!email.includes('@') ||
+!password ||
+!firstName ||
+!lastName ||
+!transactionPin ||
+!accountType ||
+!confirmPassword
+) {
+return new NextResponse(JSON.stringify({ message: 'Validation error' }), {
+status: 409,
+});
+}
 
-  try {
-    await db.connect();
+try {
+await db.connect();
 
     const existingUser = await userModel.findOne({ email: email.trim() });
 
@@ -119,18 +119,19 @@ export const POST = async (reg) => {
         status: 200,
       }
     );
-  } catch (error) {
-    console.log('err', error);
-    return new NextResponse(JSON.stringify({ message: error.message }), {
-      status: 500,
-    });
-  }
+
+} catch (error) {
+console.log('err', error);
+return new NextResponse(JSON.stringify({ message: error.message }), {
+status: 500,
+});
+}
 };
 
 //! Get All Users
 export const GET = async (req) => {
-  try {
-    await db.connect();
+try {
+await db.connect();
 
     const users = await userModel
       .find({})
@@ -146,18 +147,19 @@ export const GET = async (req) => {
         status: 200,
       }
     );
-  } catch (error) {
-    console.log('err', error);
-    return new NextResponse(JSON.stringify({ message: error.message }), {
-      status: 500,
-    });
-  }
+
+} catch (error) {
+console.log('err', error);
+return new NextResponse(JSON.stringify({ message: error.message }), {
+status: 500,
+});
+}
 };
 
 //! Update User Lock Status
 export const PUT = async (req) => {
-  try {
-    await db.connect();
+try {
+await db.connect();
 
     const { lockAccountOnTransfer, lockAccount, userId } = await req.json();
 
@@ -168,9 +170,10 @@ export const PUT = async (req) => {
 
     await user.save();
 
-    return response(200, `user account Updated succefully`);
-  } catch (error) {
-    console.log(error);
-    return response(500, 'something went wrong');
-  }
+    return response(200, 'account Updated succefully');
+
+} catch (error) {
+console.log(error);
+return response(500, 'something went wrong');
+}
 };
