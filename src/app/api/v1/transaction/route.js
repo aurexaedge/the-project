@@ -64,6 +64,9 @@ export const POST = async (req) => {
       return response(500, 'Account balance is low');
     }
 
+    if (user.isAccountLocked) {
+      return response(500, 'Account is locked due to anonymous logins!');
+    }
     if (user.lockAccountOnTransfer) {
       user.isAccountLocked = true;
     }
