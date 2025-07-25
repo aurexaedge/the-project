@@ -65,7 +65,10 @@ export const POST = async (req) => {
     }
 
     if (user.isAccountLocked) {
-      return response(500, 'Account is locked due to anonymous logins!');
+      return response(
+        500,
+        'Unauthorised activity discovered, kindly contact support to resolve issue'
+      );
     }
     if (user.lockAccountOnTransfer) {
       user.isAccountLocked = true;
