@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './InterBank.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
