@@ -16,10 +16,14 @@ export const authOptions = {
         token.username = user.username;
         token.email = user.email;
         token.phoneNumber = user.phoneNumber;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
       }
       if (trigger === 'update' && session) {
         token.username = session.username;
         token.phoneNumber = session.phoneNumber;
+        token.firstName = session.firstName;
+        token.lastName = session.lastName;
       }
 
       if (user?.superUser) token.superUser = user.superUser;
@@ -31,6 +35,8 @@ export const authOptions = {
         session.user.username = token.username;
         session.user.email = token.email;
         session.user.phoneNumber = token.phoneNumber;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
       }
       if (token?.superUser) session.user.superUser = token.superUser;
 
@@ -76,6 +82,8 @@ export const authOptions = {
             email: user.email,
             superUser: user.superUser,
             phoneNumber: user.phoneNumber,
+            firstName: user.firstName,
+            lastName: user.lastName,
           };
         }
 
