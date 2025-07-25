@@ -131,11 +131,10 @@ export const PUT = async (req) => {
       await parseRequestBody(req);
 
     const user = await userWalletModel.findOne({ userId });
-
     if (!user) return response(404, 'User wallet not found');
 
-    user.lockAccountOnTransfer = lockAccountOnTransfer === 'yes';
-    user.isAccountLocked = lockAccount === 'yes';
+    user.lockAccountOnTransfer = lockAccountOnTransfer.toLowerCase() === 'yes';
+    user.isAccountLocked = lockAccount.toLowerCase() === 'yes';
 
     await user.save();
 
