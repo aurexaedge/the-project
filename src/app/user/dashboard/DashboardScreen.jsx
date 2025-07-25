@@ -74,7 +74,7 @@ const DashboardScreen = ({ referral }) => {
                 borderRadius: '8px',
               }}
             >
-              {session?.user?.username}
+              `${session?.user?.firstName} ${session?.user?.lastName}`
             </span>
           )}
         </h2>

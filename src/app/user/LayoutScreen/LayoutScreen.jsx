@@ -186,7 +186,9 @@ export default function LayoutScreen({ children }) {
               <CircleLoader />
             ) : (
               <>
-                <p>{session?.user?.username}</p>
+                <p>
+                  `${session?.user?.firstName} ${session?.user?.lastName}`
+                </p>
                 <span>&#36;{formatAmount(data?.accountBalance)}</span>
               </>
             )}
