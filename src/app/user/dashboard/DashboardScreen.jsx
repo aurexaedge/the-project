@@ -18,7 +18,7 @@ import { CiBank } from 'react-icons/ci';
 import Link from 'next/link';
 import { MdLock } from 'react-icons/md';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
-import TransferCard from '../admin/transactions/transfers/TransferCard';
+import TransactionCard from '../transactions/TransactionCard/TransactionCard';
 
 const DashboardScreen = ({ referral }) => {
   const queryClient = useQueryClient();
@@ -178,7 +178,7 @@ const DashboardScreen = ({ referral }) => {
               View all
             </Link>
           </div>
-          <TransferCard snapshot={true} />
+          <TransactionCard snapshot={true} />
         </div>
       </div>
     </main>

@@ -2,6 +2,7 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import React from 'react';
 import TransferCard from '../admin/transactions/transfers/TransferCard';
+import TransactionCard from './TransactionCard/TransactionCard';
 
 const TopUps = () => {
   return (
@@ -14,7 +15,7 @@ const TopUps = () => {
         Transaction History
       </h3>
 
-      <TransferCard snapshot={true} />
+      <TransactionCard snapshot={true} />
     </HeaderLayout>
   );
 };

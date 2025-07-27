@@ -14,19 +14,21 @@ import LoaderWithText from '@/components/Loaders/LoaderWithText/LoaderWithText';
 import LogoItem from '@/components/LogoItem/LogoItem';
 import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import formatDateTimeToLocal from '@/utils/formatDateToLocal';
+import { LiaEdit } from 'react-icons/lia';
+import EditTimeModal from '../../../components/EditTimeModal/EditTimeModal';
 
 const SingleTransaction = ({ id }) => {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { data, isError, isLoading, isPending, isFetching } = useQuery({
+  const { data, isError, isLoading, isFetching } = useQuery({
     queryKey: ['singleTransactionOrder', id],
     queryFn: async () => {
       const response = await axios.get(`/api/v1/transaction/${id}`);
-      const data = await response.data.message;
-
+      const data = response.data.message;
       return data;
     },
+
     staleTime: 1000,
     refetchInterval: 1000 * 60,
   });
@@ -60,6 +62,11 @@ const SingleTransaction = ({ id }) => {
 
     setTimeout(() => setLoading(false), 1000);
   };
+  const [showPopup, setShowPopup] = useState(false);
+
+  const showPopUp = () => {
+    setShowPopup(!showPopup);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -73,6 +80,14 @@ const SingleTransaction = ({ id }) => {
         {isError && <ErrorTemplate text='Transactions' />}
         {data && (
           <div id='receipt' className={styles.receipt_container}>
+            <button
+              data-html2canvas-ignore
+              onClick={showPopUp}
+              className={styles.edit_button}
+            >
+              Edit
+              <LiaEdit color='black' />
+            </button>
             <div className={styles.logo_container}>
               <LogoItem />
             </div>
@@ -140,13 +155,14 @@ const SingleTransaction = ({ id }) => {
         )}
       </div>
 
-      {/* <InvoiceModal
-        id={id}
-        userId={data?.userId?._id}
+      {openModal && <OverLayLoader />}
+      <EditTimeModal
+        data={data}
         setShowPopup={setShowPopup}
         showPopup={showPopup}
-      /> */}
-      {openModal && <OverLayLoader />}
+        isLoading={isLoading}
+        id={id}
+      />
     </div>
   );
 };

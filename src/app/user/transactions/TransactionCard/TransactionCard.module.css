@@ -1,0 +1,97 @@
+.transfer_container {
+  max-width: 600px;
+  background-color: #fff;
+  padding: 10px;
+}
+.transfer_container > h3 {
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+.transfer_card {
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(230, 230, 230);
+  padding-bottom: 10px;
+}
+
+.transfer_card:hover {
+  background-color: rgba(248, 248, 248, 0.534);
+}
+.left_side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.left_side_inner {
+  font-display: flex;
+  flex-direction: column;
+}
+.left_side_inner p:nth-of-type(2),
+.left_side_inner p:nth-of-type(3) {
+  font-size: 12px;
+}
+
+.left_side_inner p:nth-of-type(1) {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.left_side_inner p:nth-of-type(2) {
+  letter-spacing: 0.08em;
+  margin: 5px 0;
+}
+
+.left_side_inner p:nth-of-type(3) {
+  opacity: 0.6;
+}
+.right_side {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.right_side {
+  font-size: 17px;
+  font-weight: 500;
+  color: #29a329;
+}
+
+.icon_container {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+}
+.credit {
+  color: #29a329;
+}
+
+.credit_icon {
+  background-color: #c2f0c2;
+  color: #29a329;
+}
+.debit {
+  color: #ff3333;
+}
+
+.debit_icon {
+  background-color: #ffcccc;
+  color: #ff3333;
+}
+@media screen and (max-width: 760px) {
+  .left_side_inner p:nth-of-type(1) {
+    font-size: 11px;
+  }
+
+  .left_side_inner p:nth-of-type(2) {
+    font-size: 9px;
+  }
+
+  .left_side_inner p:nth-of-type(3) {
+    font-size: 9px;
+  }
+}

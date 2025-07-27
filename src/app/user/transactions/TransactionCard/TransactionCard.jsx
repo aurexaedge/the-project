@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import styles from './Transfer.module.css';
+import styles from './TransactionCard.module.css';
 import { GoArrowDownLeft } from 'react-icons/go';
 import { GoArrowUpRight } from 'react-icons/go';
 import { LiaEdit } from 'react-icons/lia';
@@ -18,7 +18,7 @@ import EmptyOder from '@/components/EmptyOrderTemplate/EmptyOder';
 import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 import { formatAmount } from '@/utils/formatAmount';
 
-const TransferCard = ({ snapshot }) => {
+const TransactionCard = ({ snapshot }) => {
   const router = useRouter();
   const { status, data: session } = useSession();
 
@@ -35,7 +35,7 @@ const TransferCard = ({ snapshot }) => {
     //   return;
     // }
     setOpenModal(true);
-    router.push(`/user/admin/transactions/transfers/${transactionId}`);
+    router.push(`/user/transactions/${transactionId}`);
   };
 
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -102,4 +102,4 @@ const TransferCard = ({ snapshot }) => {
   );
 };
 
-export default TransferCard;
+export default TransactionCard;
