@@ -7,7 +7,8 @@ import { useState } from 'react';
 
 //! i introduced tanstack query to the auth provider
 export default function AuthProvider({ children }) {
-  const [queryClient] = useState(() => new QueryClient()
+  const [queryClient] = useState(
+    () => new QueryClient()
     // new QueryClient({
     //   defaultOptions: {
     //     queries: {

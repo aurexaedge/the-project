@@ -11,11 +11,10 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { AppContext } from '@/context/AppContext';
 import { useContext } from 'react';
+import useAutoLogout from '@/hooks/useAutoLogout';
 
 const ClientProvider = ({ children }) => {
   const router = useRouter();
-
-  const { asPath, pathname } = useRouter();
 
   const { status, data: session } = useSession();
 
@@ -32,6 +31,8 @@ const ClientProvider = ({ children }) => {
     };
     checkAuthentication();
   }, [session]);
+
+  useAutoLogout();
 
   return (
     <div>

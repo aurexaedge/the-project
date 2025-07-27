@@ -8,6 +8,10 @@ export const authOptions = {
   secret: `${process.env.NEXTAUTH_SECRET}`,
   session: {
     strategy: 'jwt',
+    maxAge: 2 * 60 * 60, // 2 hours in seconds
+  },
+  jwt: {
+    maxAge: 2 * 60 * 60, // 2 hours in seconds
   },
   callbacks: {
     async jwt({ token, user, session, trigger }) {
@@ -18,6 +22,8 @@ export const authOptions = {
         token.phoneNumber = user.phoneNumber;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        // i added this code under if i want session to expire every 2 hours
+        token.exp = Math.floor(Date.now() / 1000) + 2 * 60 * 60; // expires in 2 hrs
       }
       if (trigger === 'update' && session) {
         token.username = session.username;
@@ -37,6 +43,8 @@ export const authOptions = {
         session.user.phoneNumber = token.phoneNumber;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
+        // i added this code under if i want session to expire every 2 hours
+        session.expires = new Date(token.exp * 1000).toISOString(); // for client use
       }
       if (token?.superUser) session.user.superUser = token.superUser;
 
