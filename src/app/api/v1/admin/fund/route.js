@@ -87,24 +87,27 @@ export const POST = async (req) => {
   }
 };
 
-// ✅ GET (minor fixes: use session.user._id and better error checks)
+// ✅ GET ALL TRANSACTIONS
 export const GET = async (req) => {
   try {
     await db.connect();
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.id) {
-      return response(401, 'Unauthorised');
+    if (!session || (session && !session.user.superUser)) {
+      return new NextResponse(
+        JSON.stringify({ message: 'something went wrong' }),
+        { status: 400 }
+      );
     }
 
-    const userId = session.user.id;
-
     const fetchData = await transactionModel
-      .find({ userId })
+      .find({})
       .sort({ _id: -1 })
       .select('-updatedAt -__v -userId');
 
-    return NextResponse.json({ message: fetchData }, { status: 200 });
+    return new NextResponse(JSON.stringify({ message: fetchData }), {
+      status: 200,
+    });
   } catch (error) {
     console.error('GET error:', error);
     return response(500, 'Something went wrong');

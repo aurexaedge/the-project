@@ -24,7 +24,7 @@ const SingleTransaction = ({ id }) => {
   const { data, isError, isLoading, isFetching } = useQuery({
     queryKey: ['singleTransactionOrder', id],
     queryFn: async () => {
-      const response = await axios.get(`/api/v1/transaction/${id}`);
+      const response = await axios.get(`/api/v1/admin/fund/${id}`);
       const data = response.data.message;
       return data;
     },

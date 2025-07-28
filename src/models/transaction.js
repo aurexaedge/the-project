@@ -20,6 +20,10 @@ const transactionSchema = new mongoose.Schema(
     transactionStatus: { type: String },
     swwiftCode: { type: String },
     routingNumber: { type: String },
+    transactionDate: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: true,

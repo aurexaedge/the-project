@@ -17,14 +17,14 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
   const ref = useRef(null);
 
   const [formData, setFormData] = useState({
-    city: '',
+    beneficiaryAccountName: '',
     createdAt: new Date(),
   });
 
   useEffect(() => {
     if (data) {
       setFormData({
-        city: data.city || '',
+        beneficiaryAccountName: data.beneficiaryAccountName || '',
         createdAt: data.createdAt ? new Date(data.createdAt) : null,
       });
     }
@@ -61,28 +61,14 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
   };
   const { mutate: handleUpdateTime, isPending } = useMutation({
     mutationFn: async () => {
-      const requiredFields = ['bankName', 'beneficiaryAccountName'];
-
-      const hasEmptyFields = requiredFields.some(
-        (field) => formData[field].length === 0
-      );
-
-      if (hasEmptyFields) {
-        throw new Error('Validation Error: All fields must be completed');
-      }
-
-      const res = await axios.post(`/api/v1/transaction`, formData);
+      console.log('fff', formData);
+      const res = await axios.post(`/api/v1/admin/fund/${id}`, formData);
       return res.data;
     },
 
     onSuccess: async (res) => {
-      setFormData({
-        bankName: '',
-        beneficiaryAccountName: '',
-        picture: '',
-      });
-      toast.success('update successful');
-      queryClient.invalidateQueries(['fetchWallet', 'id']);
+      toast.success(res.message);
+      queryClient.invalidateQueries(['singleTransactionOrder', 'id']);
     },
     onError: (error) => {
       console.log(error);
@@ -105,7 +91,7 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
             showPopup ? styles.active : styles.inactive
           }`}
         >
-          <div ref={ref} id='paynow' className={styles.continue_wrapper}>
+          <div ref={ref} className={styles.continue_wrapper}>
             <div className={styles.continue_wrapper_header}>
               <p>Edit Date/Time</p>
               <MdOutlineCancel
@@ -136,15 +122,28 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
                       dateFormat='Pp'
                       className={styles.formateDate}
                     />
-                    <p>{data?.createdAt}</p>
+                    <input
+                      type='text'
+                      name='beneficiaryAccountName'
+                      value={formData?.beneficiaryAccountName}
+                      id=''
+                      onChange={handleInputChange}
+                    />
+                    {/* <p>
+                      c - date{' '}
+                      {formData?.createdAt
+                        ? formData.createdAt.toISOString()
+                        : 'No date'}
+                    </p> */}
                   </div>
 
                   <div className={styles.button_container}>
                     <button
-                      onClick={handleModalPopUp}
+                      onClick={handleUpdateTime}
                       className={styles.btn_close}
+                      disabled={isPending}
                     >
-                      Close
+                      {isPending ? 'Updating...' : 'Update Date/Time'}
                     </button>
                   </div>
                 </>

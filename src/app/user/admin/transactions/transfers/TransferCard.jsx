@@ -25,8 +25,8 @@ const TransferCard = ({ snapshot }) => {
   const [openModal, setOpenModal] = useState(false);
 
   const { data, isError, isLoading, isPending, isFetching } = useFetchData({
-    queryKey: ['fetchTransaction'],
-    endpoint: '/api/v1/transaction/',
+    queryKey: ['fetchAdminTransaction'],
+    endpoint: '/api/v1/admin/fund',
   });
 
   const handleOpenOrder = (transactionId) => {
