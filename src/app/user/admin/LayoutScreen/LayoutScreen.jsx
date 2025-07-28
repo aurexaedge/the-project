@@ -10,22 +10,22 @@ import { LiaSmileWinkSolid } from 'react-icons/lia';
 const menuItems = [
   {
     id: 'transactions',
-    url: '/user/admin/transactions/transfers',
+    url: '/user/admin/transactions',
     menuName: 'Transfer',
     iconsType: <FaMapMarkerAlt />,
   },
   {
     id: 'users',
-    url: '/user/admin/transactions/users',
+    url: '/user/admin/users',
     menuName: 'Users',
     iconsType: <FaFileInvoice />,
   },
-  {
-    id: 'settings',
-    url: '/user/admin/transactions/settings',
-    menuName: 'Settings',
-    iconsType: <FaMapMarkerAlt />,
-  },
+  // {
+  //   id: 'settings',
+  //   url: '/user/admin/settings',
+  //   menuName: 'Settings',
+  //   iconsType: <FaMapMarkerAlt />,
+  // },
 ];
 const LayoutScreen = ({ children }) => {
   const pathname = usePathname();
@@ -38,7 +38,7 @@ const LayoutScreen = ({ children }) => {
 
       <div className={styles.layout_navbar}>
         {menuItems.map((item) => {
-          const basePath = item.url.split('?')[0];
+          const basePath = item.url.replace(/\/$/, '');
           const isActive = pathname.startsWith(basePath);
 
           return (

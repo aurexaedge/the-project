@@ -170,6 +170,7 @@ const InterBank = () => {
             Aurexa Egbe Bank Account Number: <br />
             <input
               type='number'
+              inputMode='numeric'
               name='beneficiaryAccountNumber'
               placeholder='97001299833'
               value={formData?.beneficiaryAccountNumber}
@@ -191,6 +192,7 @@ const InterBank = () => {
             Amount (USD &#36;): <br />
             <input
               type='text'
+              inputMode='numeric'
               name='amount'
               placeholder='enter amount'
               value={formData?.amount}

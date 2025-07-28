@@ -39,7 +39,7 @@ export const POST = async (req, { params }) => {
     await db.connect();
     const session = await getServerSession(authOptions);
 
-    const { transactionDate, beneficiaryAccountName } = await req.json();
+    const { transactionDate } = await req.json();
     const transactionId = params.id;
 
     if (!session || (session && !session.user.superUser)) {
@@ -50,7 +50,6 @@ export const POST = async (req, { params }) => {
       .findOne({ transactionId })
       .select('-updatedAt -__v');
 
-    order.beneficiaryAccountName = beneficiaryAccountName;
     order.transactionDate = new Date(transactionDate);
     await order.save();
 

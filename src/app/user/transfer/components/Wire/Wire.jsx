@@ -433,6 +433,7 @@ const Wire = () => {
             Beneficiary Account Number: <br />
             <input
               type='number'
+              inputMode='numeric'
               name='beneficiaryAccountNumber'
               placeholder='97001299833'
               value={formData?.beneficiaryAccountNumber}
@@ -482,6 +483,7 @@ const Wire = () => {
             <input
               type='text'
               name='amount'
+              inputMode='numeric'
               placeholder='enter amount'
               value={formData?.amount}
               onChange={handleAmountInputChange}

@@ -17,14 +17,14 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
   const ref = useRef(null);
 
   const [formData, setFormData] = useState({
-    beneficiaryAccountName: '',
+    // beneficiaryAccountName: '',
     transactionDate: new Date(),
   });
 
   useEffect(() => {
     if (data) {
       setFormData({
-        beneficiaryAccountName: data.beneficiaryAccountName || '',
+        // beneficiaryAccountName: data.beneficiaryAccountName || '',
         transactionDate: data.transactionDate
           ? new Date(data.transactionDate)
           : null,
@@ -63,7 +63,6 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
   };
   const { mutate: handleUpdateTime, isPending } = useMutation({
     mutationFn: async () => {
-      console.log('fff', formData);
       const res = await axios.post(`/api/v1/admin/fund/${id}`, formData);
       return res.data;
     },
@@ -128,19 +127,13 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
                       dateFormat='Pp'
                       className={styles.formateDate}
                     />
-                    <input
+                    {/* <input
                       type='text'
                       name='beneficiaryAccountName'
                       value={formData?.beneficiaryAccountName}
                       id=''
                       onChange={handleInputChange}
-                    />
-                    {/* <p>
-                      c - date{' '}
-                      {formData?.transactionDate
-                        ? formData.transactionDate.toISOString()
-                        : 'No date'}
-                    </p> */}
+                    /> */}
                   </div>
 
                   <div className={styles.button_container}>

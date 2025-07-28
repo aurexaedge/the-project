@@ -223,7 +223,7 @@ export default function LayoutScreen({ children }) {
           })}
           {session?.user?.superUser === true && (
             <Link
-              href='/user/admin/transactions/transfers'
+              href='/user/admin/transactions'
               onClick={closeMenu}
               className={styles.user_admin}
             >

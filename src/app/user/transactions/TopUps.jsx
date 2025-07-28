@@ -1,7 +1,6 @@
 'use client';
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import React from 'react';
-import TransferCard from '../admin/transactions/transfers/TransferCard';
 import TransactionCard from './TransactionCard/TransactionCard';
 
 const TopUps = () => {

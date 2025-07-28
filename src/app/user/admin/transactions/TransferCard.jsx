@@ -1,10 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import styles from './Transfer.module.css';
-import { GoArrowDownLeft } from 'react-icons/go';
 import { GoArrowUpRight } from 'react-icons/go';
 import { LiaEdit } from 'react-icons/lia';
-import { HiDotsVertical } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
 
 import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
@@ -35,7 +33,7 @@ const TransferCard = ({ snapshot }) => {
     //   return;
     // }
     setOpenModal(true);
-    router.push(`/user/admin/transactions/transfers/${transactionId}`);
+    router.push(`/user/admin/transactions/${transactionId}`);
   };
 
   const isMobile = useMediaQuery('(max-width: 768px)');
