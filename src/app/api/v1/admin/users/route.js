@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 import bcryptjs from 'bcryptjs';
 import userModel from '@/models/user';
 import db from '@/utils/db';
@@ -108,9 +110,10 @@ export const POST = async (req) => {
 export const GET = async (req) => {
   try {
     await db.connect();
+    const session = await getServerSession(authOptions);
 
     if (!session || (session && !session.user.superUser)) {
-      return response(400, 'something went wrong');
+      return response(400, 'Unauthorised');
     }
 
     const users = await userModel

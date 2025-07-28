@@ -15,22 +15,9 @@ import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
 import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 import ErrorTemplate from '@/components/ErrorTemplate/ErrorTemplate';
 
-const transactionOrders = [
-  {
-    username: 'funnyemma11',
-    email: 'jamesrily@gmail.com',
-    date: '12th July 2025',
-  },
-  {
-    username: 'isaccsmoke',
-    email: 'giggiwe@yahoo.com',
-    date: '13th May 2025',
-  },
-];
-
 const UserCard = ({ snapshot }) => {
   const { data, isError, isLoading, isPending, isFetching } = useFetchData({
-    queryKey: ['fetchAdminTransaction'],
+    queryKey: ['fetchUsersForAdmin'],
     endpoint: '/api/v1/admin/users',
   });
 
@@ -40,7 +27,7 @@ const UserCard = ({ snapshot }) => {
 
   const handleOpenOrder = (userId) => {
     setOpenModal(true);
-    router.push(`/user/admin/transactions/users/${userId}`);
+    router.push(`/user/admin/users/${userId}`);
   };
   return (
     <div className={styles.transfer_container}>

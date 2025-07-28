@@ -75,6 +75,9 @@ const TransferCard = ({ snapshot }) => {
                     : item?.shortDescription}
                 </p>
                 <p>{formatDateTimeToLocal(item?.transactionDate)}</p>
+                <p style={{ color: 'blue', fontSize: '10px' }}>
+                  Receipt owner - {item?.userId?.username}
+                </p>
               </div>
             </div>
             <div

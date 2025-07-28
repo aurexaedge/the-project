@@ -15,7 +15,7 @@ import LogoItem from '@/components/LogoItem/LogoItem';
 import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 import { LiaEdit } from 'react-icons/lia';
-import EditTimeModal from '../../../components/EditTimeModal/EditTimeModal';
+import EditTimeModal from '../../components/EditTimeModal/EditTimeModal';
 
 const SingleTransaction = ({ id }) => {
   const [openModal, setOpenModal] = useState(false);

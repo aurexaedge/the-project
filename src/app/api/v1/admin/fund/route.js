@@ -103,6 +103,10 @@ export const GET = async (req) => {
     const fetchData = await transactionModel
       .find({})
       .sort({ _id: -1 })
+      .populate({
+        path: 'userId',
+        select: 'username -_id',
+      })
       .select('-updatedAt -__v -userId');
 
     return new NextResponse(JSON.stringify({ message: fetchData }), {

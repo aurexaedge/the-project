@@ -3,9 +3,6 @@ import styles from './SingleUser.module.css';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { formatAmount } from '@/utils/formatAmount';
-import { replaceWithBr } from '@/utils/formatText';
-import ErrorTemplate from '@/components/ErrorTemplate/ErrorTemplate';
 import { toast } from 'sonner';
 import { GoTrash } from 'react-icons/go';
 import html2pdf from 'html2pdf.js';
@@ -75,43 +72,12 @@ const SingleUser = ({ id }) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const showPopUp = async () => {
-    setShowPopup(!showPopup);
-    // queryClient.invalidateQueries(['singleAdminInvoice', id]);
+  const [selectedAction, setSelectedAction] = useState('');
+
+  const handleOperationChange = (e) => {
+    setSelectedAction(e.target.value);
   };
 
-  const handleButtonClick = (event) => {
-    const value = event.target.innerText;
-    setActive(value);
-    setFormData({ ...formData, severity: value });
-  };
-  const handleSave = (event) => {
-    event.preventDefault();
-    setSubmittedData(formData);
-  };
-  const handleOpenOrder = (orderId) => {
-    setOpenModal(true);
-  };
-
-  const handleDownloadReceipt = () => {
-    setLoading(true);
-    const element = document.querySelector('#receipt');
-
-    const options = {
-      margin: 1, // inches gives margin to the document and centers it
-      filename: `Receipt_${id}.pdf`, // ✅ custom file name
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 }, // better quality
-      jsPDF: {
-        unit: 'in', // inches
-        format: 'A4', // or 'letter', [width, height], etc.
-        orientation: 'portrait', // or 'landscape'
-      },
-    };
-
-    html2pdf().set(options).from(element).save();
-    setTimeout(() => setLoading(false), 1000);
-  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -123,80 +89,62 @@ const SingleUser = ({ id }) => {
         )} */}
         {/* {isError && <ErrorTemplate text='orders' />} */}
         {!data && (
-          <div id='receipt' className={styles.reciept_container}>
-            <div className={styles.logo_container}>
-              <LogoItem />
-            </div>
-            <h4>Transaction Receipt</h4>
+          <div className={styles.reciept_container}>
+            <h4 className={styles.header}>User Account Information</h4>
             <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transaction Amount</p>
+              <p className={styles.detail_key}>Username:</p>
+              <p>kekus maximus</p>
+            </div>
+            <div className={styles.receipt_card}>
+              <p className={styles.detail_key}>Account Balance</p>
               <p>&#36;20,000</p>
               {/* <p>&#36;{formatAmount(data?.deliveryPaymentAmount)}</p> */}
             </div>
             <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transaction Type</p>
-              <p>Credit</p>
+              <p className={styles.detail_key}> Account Status</p>
+              <p>Locked</p>
             </div>
             <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transfer Type</p>
-              <p>Inter Bank</p>
+              <p className={styles.detail_key}>Lock Account On Transfer</p>
+              <p>No</p>
             </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transaction Date</p>
-              <p>2024-09-13</p>
+            <div className={styles.operation_container}>
+              <h4 className={styles.header}>Perform operation</h4>
             </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Sender</p>
-              <p>***0877</p>
+
+            <div className={styles.input_cotainer}>
+              <label htmlFor='action'>Select Action:</label>
+              <select
+                id='action'
+                value={selectedAction}
+                onChange={handleOperationChange}
+              >
+                <option value=''>-- Choose an option --</option>
+                <option value='update'>Update Account Status</option>
+                <option value='deposit'>Deposit to Account</option>
+              </select>
             </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Beneficiary Account Name</p>
-              <p>James Levi</p>
-            </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Beneficiary Account Number</p>
-              <p>66536354663</p>
-            </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transaction ID</p>
-              <p>3f2a88a7-9b1e-4c0a-b5c1-7084ae1bbf30</p>
-            </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Remark</p>
-              <p>For Maintenace and Insurance</p>
-            </div>
-            <div className={styles.receipt_card}>
-              <p className={styles.detail_key}>Transaction Status</p>
-              <p>Success</p>
-            </div>
-            <p
-              style={{
-                fontSize: '10px',
-                letterSpacing: '0.08em',
-                marginTop: '30px',
-              }}
-            >
-              This receipt was generated by Aurexa Edge Bank, For further
-              inquiries, contact support at{' '}
-              <span style={{ color: 'blue' }}>support@aurexaedge.com</span>
-            </p>
+            {selectedAction === 'update' && (
+              <div className={styles.update_container}>
+                <button>Update Account</button>
+              </div>
+            )}
+            {selectedAction === 'deposit' && (
+              <div className={styles.deposit_container}>
+                <button>Deposit to Account</button>
+              </div>
+            )}
           </div>
         )}
 
-        <CallToAction
+        {/* <CallToAction
           loading={loading}
           text='Download Receipt'
           progressText='Downloading...'
           action={handleDownloadReceipt}
-        />
+        /> */}
       </div>
 
-      {/* <InvoiceModal
-        id={id}
-        userId={data?.userId?._id}
-        setShowPopup={setShowPopup}
-        showPopup={showPopup}
-      /> */}
       {openModal && <OverLayLoader />}
     </div>
   );
