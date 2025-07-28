@@ -10,6 +10,10 @@ import { useRouter } from 'next/navigation';
 import { CiUser } from 'react-icons/ci';
 
 import OverLayLoader from '@/components/Loaders/OverLayLoader/OverLayLoader';
+import useFetchData from '@/hooks/useFetchData';
+import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
+import formatDateTimeToLocal from '@/utils/formatDateToLocal';
+import ErrorTemplate from '@/components/ErrorTemplate/ErrorTemplate';
 
 const transactionOrders = [
   {
@@ -25,6 +29,11 @@ const transactionOrders = [
 ];
 
 const UserCard = ({ snapshot }) => {
+  const { data, isError, isLoading, isPending, isFetching } = useFetchData({
+    queryKey: ['fetchAdminTransaction'],
+    endpoint: '/api/v1/admin/users',
+  });
+
   const router = useRouter();
 
   const [openModal, setOpenModal] = useState(false);
@@ -36,8 +45,10 @@ const UserCard = ({ snapshot }) => {
   return (
     <div className={styles.transfer_container}>
       {!snapshot && <h3>Users</h3>}
+      {isLoading === true && <CircleLoader />}
+      {isError && <ErrorTemplate text='Users' />}
 
-      {transactionOrders?.map((item, index) => {
+      {data?.map((item, index) => {
         return (
           <div
             key={index}
@@ -51,7 +62,7 @@ const UserCard = ({ snapshot }) => {
               <div className={styles.left_side_inner}>
                 <p>{item?.username}</p>
                 <p>{item?.email}</p>
-                <p>{item?.date}</p>
+                <p>{formatDateTimeToLocal(item?.createdAt)}</p>
               </div>
             </div>
             <div className={styles.right_side}>

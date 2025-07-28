@@ -109,10 +109,14 @@ export const GET = async (req) => {
   try {
     await db.connect();
 
+    if (!session || (session && !session.user.superUser)) {
+      return response(400, 'something went wrong');
+    }
+
     const users = await userModel
       .find({})
       .select(
-        '-firstName -lastName -updatedAt -createdAt -password -superUser -accountType -__v -phoneNumber'
+        '-firstName -lastName -updatedAt -password -superUser -accountType -__v -phoneNumber'
       );
 
     return NextResponse.json({ message: users }, { status: 200 });
