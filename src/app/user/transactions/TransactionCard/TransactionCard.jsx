@@ -76,7 +76,7 @@ const TransactionCard = ({ snapshot }) => {
                     ? cutTextTo21(item?.shortDescription)
                     : item?.shortDescription}
                 </p>
-                <p>{formatDateTimeToLocal(item?.createdAt)}</p>
+                <p>{formatDateTimeToLocal(item?.transactionDate)}</p>
               </div>
             </div>
             <div

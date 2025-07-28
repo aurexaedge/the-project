@@ -18,14 +18,16 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
 
   const [formData, setFormData] = useState({
     beneficiaryAccountName: '',
-    createdAt: new Date(),
+    transactionDate: new Date(),
   });
 
   useEffect(() => {
     if (data) {
       setFormData({
         beneficiaryAccountName: data.beneficiaryAccountName || '',
-        createdAt: data.createdAt ? new Date(data.createdAt) : null,
+        transactionDate: data.transactionDate
+          ? new Date(data.transactionDate)
+          : null,
       });
     }
   }, [id, data]);
@@ -115,9 +117,13 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
                     <br />
                     <DatePicker
                       selected={
-                        formData.createdAt ? new Date(formData.createdAt) : null
+                        formData.transactionDate
+                          ? new Date(formData.transactionDate)
+                          : null
                       }
-                      onChange={(date) => handleInputChange(date, 'createdAt')}
+                      onChange={(date) =>
+                        handleInputChange(date, 'transactionDate')
+                      }
                       showTimeSelect
                       dateFormat='Pp'
                       className={styles.formateDate}
@@ -131,8 +137,8 @@ const EditTimeModal = ({ setShowPopup, showPopup, data, isLoading, id }) => {
                     />
                     {/* <p>
                       c - date{' '}
-                      {formData?.createdAt
-                        ? formData.createdAt.toISOString()
+                      {formData?.transactionDate
+                        ? formData.transactionDate.toISOString()
                         : 'No date'}
                     </p> */}
                   </div>

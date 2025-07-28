@@ -91,7 +91,7 @@ const SingleTransaction = ({ id }) => {
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Transaction Date</p>
-              <p>{formatDateTimeToLocal(data?.createdAt)}</p>
+              <p>{formatDateTimeToLocal(data?.transactionDate)}</p>
             </div>
             <div className={styles.receipt_card}>
               <p className={styles.detail_key}>Sender</p>
