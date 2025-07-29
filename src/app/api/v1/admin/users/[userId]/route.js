@@ -17,7 +17,6 @@ export const GET = async (req, { params }) => {
     //     { status: 400 }
     //   );
     // }
-
     const userId = params.userId;
     const user = await userWalletModel
       .findOne({ userId })

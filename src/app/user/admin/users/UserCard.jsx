@@ -39,7 +39,7 @@ const UserCard = ({ snapshot }) => {
         return (
           <div
             key={index}
-            onClick={() => handleOpenOrder(item?.username)}
+            onClick={() => handleOpenOrder(item?._id)}
             className={styles.transfer_card}
           >
             <div className={styles.left_side}>
