@@ -59,9 +59,6 @@ const SingleUser = ({ id }) => {
       ...formData,
       [event.target.name]: value,
     });
-
-    console.log('action', formData.isAccountLocked);
-    console.log(event.target.name, event.target.checked);
   };
 
   const handleAmountInputChange = (e) => {
@@ -99,7 +96,32 @@ const SingleUser = ({ id }) => {
   const { mutate: handleUpdateStatus, isPending: submitOrderIsPending } =
     useMutation({
       mutationFn: async () => {
-        const res = await axios.post(`/api/v1/admin/users`, formData);
+        const res = await axios.put(`/api/v1/admin/users`, {
+          ...formData,
+          userId: id,
+        });
+        return res.data;
+      },
+
+      onSuccess: async (res) => {
+        toast.success(res?.message);
+
+        queryClient.invalidateQueries([
+          'singleUserForAdmin, fetchUsersForAdmin',
+        ]);
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error(error?.response?.data?.message || error.message);
+      },
+    });
+  const { mutate: handleDepositAmount, isPending: submitAmountOrderIsPending } =
+    useMutation({
+      mutationFn: async () => {
+        const res = await axios.put(`/api/v1/admin/users`, {
+          ...formData,
+          userId: id,
+        });
         return res.data;
       },
 
@@ -214,10 +236,11 @@ const SingleUser = ({ id }) => {
                   />
                 </div>
                 <button
+                  disabled={submitOrderIsPending}
                   onClick={handleUpdateStatusWithConfirmation}
                   className={styles.btn_process}
                 >
-                  Update Account
+                  {submitOrderIsPending ? 'Updating' : 'Update Account'}
                 </button>
               </div>
             )}

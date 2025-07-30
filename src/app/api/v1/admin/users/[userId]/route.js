@@ -11,12 +11,12 @@ export const GET = async (req, { params }) => {
     await db.connect();
     const session = await getServerSession(authOptions);
 
-    // if (!session || (session && !session.user.superUser)) {
-    //   return new NextResponse(
-    //     JSON.stringify({ message: 'something went wrong' }),
-    //     { status: 400 }
-    //   );
-    // }
+    if (!session || (session && !session.user.superUser)) {
+      return new NextResponse(
+        JSON.stringify({ message: 'something went wrong' }),
+        { status: 400 }
+      );
+    }
     const userId = params.userId;
     const user = await userWalletModel
       .findOne({ userId })

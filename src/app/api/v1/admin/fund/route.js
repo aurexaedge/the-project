@@ -10,6 +10,9 @@ import { returnFormattedAmount } from '@/utils/returnFormattedAmount';
 import transactionModel from '@/models/transaction';
 import accountDetailModel from '@/models/accountDetail';
 import { v4 as uuidv4 } from 'uuid';
+function generateRandom10DigitNumber() {
+  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
+}
 
 function maskExceptLastThree(value) {
   const str = String(value);
@@ -27,6 +30,13 @@ function maskExceptLastThree(value) {
 export const POST = async (req) => {
   try {
     await db.connect();
+    const session = await getServerSession(authOptions);
+
+    if (!session || (session && !session.user.superUser)) {
+      return new NextResponse(JSON.stringify({ message: 'Unauthorised' }), {
+        status: 400,
+      });
+    }
 
     const contentType = req.headers.get('content-type');
     let body;
@@ -67,7 +77,7 @@ export const POST = async (req) => {
       amount,
       transactionType: 'Credit',
       transferType: 'Credit',
-      sender: maskExceptLastThree(userAccount.accountNumber),
+      sender: maskExceptLastThree(generateRandom10DigitNumber()),
       transactionId: uuidv4(),
       remark: 'Deposit',
       shortDescription: `Incoming transfer to ${userAccount.accountName}`,

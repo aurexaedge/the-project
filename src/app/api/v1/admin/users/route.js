@@ -118,6 +118,7 @@ export const GET = async (req) => {
 
     const users = await userModel
       .find({})
+      .sort({ _id: -1 })
       .select(
         '-firstName -lastName -updatedAt -password -superUser -accountType -__v -phoneNumber'
       );
@@ -133,15 +134,22 @@ export const GET = async (req) => {
 export const PUT = async (req) => {
   try {
     await db.connect();
+    const session = await getServerSession(authOptions);
 
-    const { lockAccountOnTransfer, lockAccount, userId } =
+    if (!session || (session && !session.user.superUser)) {
+      return new NextResponse(
+        JSON.stringify({ message: 'something went wrong' }),
+        { status: 400 }
+      );
+    }
+    const { lockAccountOnTransfer, isAccountLocked, userId } =
       await parseRequestBody(req);
 
     const user = await userWalletModel.findOne({ userId });
     if (!user) return response(404, 'User wallet not found');
 
-    user.lockAccountOnTransfer = lockAccountOnTransfer.toLowerCase() === 'yes';
-    user.isAccountLocked = lockAccount.toLowerCase() === 'yes';
+    user.lockAccountOnTransfer = lockAccountOnTransfer;
+    user.isAccountLocked = isAccountLocked;
 
     await user.save();
 
