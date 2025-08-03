@@ -6,6 +6,20 @@
 .transfer_container > h3 {
   margin-bottom: 20px;
   opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.transfer_container > h3 > button {
+  background-color: rgb(228, 228, 228);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--brand-color);
+  color: #fff;
+}
+.transfer_container > h3 > button:hover {
+  background-color: var(--secondary-color);
 }
 .transfer_card {
   cursor: pointer;

@@ -14,8 +14,9 @@ import useFetchData from '@/hooks/useFetchData';
 import CircleLoader from '@/components/Loaders/CircleLoader/CircleLoader';
 import formatDateTimeToLocal from '@/utils/formatDateToLocal';
 import ErrorTemplate from '@/components/ErrorTemplate/ErrorTemplate';
+import CreateUserModal from '../components/CreateUserModal/CreateUserModal';
 
-const UserCard = ({ snapshot }) => {
+const UserCard = () => {
   const { data, isError, isLoading, isPending, isFetching } = useFetchData({
     queryKey: ['fetchUsersForAdmin'],
     endpoint: '/api/v1/admin/users',
@@ -24,14 +25,21 @@ const UserCard = ({ snapshot }) => {
   const router = useRouter();
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalForCreateUser, setOpenModalForCreateUser] = useState(false);
 
   const handleOpenOrder = (userId) => {
     setOpenModal(true);
     router.push(`/user/admin/users/${userId}`);
   };
+  const handleOpenOrderForCreateUser = () => {
+    setOpenModalForCreateUser(true);
+  };
   return (
     <div className={styles.transfer_container}>
-      {!snapshot && <h3>Users</h3>}
+      <h3>
+        Users{' '}
+        <button onClick={handleOpenOrderForCreateUser}>Create User</button>
+      </h3>
       {isLoading === true && <CircleLoader />}
       {isError && <ErrorTemplate text='Users' />}
 
@@ -60,6 +68,10 @@ const UserCard = ({ snapshot }) => {
       })}
 
       {openModal && <OverLayLoader />}
+      <CreateUserModal
+        setOpenModalForCreateUser={setOpenModalForCreateUser}
+        openModalForCreateUser={openModalForCreateUser}
+      />
     </div>
   );
 };

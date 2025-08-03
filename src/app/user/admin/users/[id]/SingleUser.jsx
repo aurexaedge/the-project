@@ -118,9 +118,10 @@ const SingleUser = ({ id }) => {
   const { mutate: handleDepositAmount, isPending: submitAmountOrderIsPending } =
     useMutation({
       mutationFn: async () => {
-        const res = await axios.put(`/api/v1/admin/users`, {
+        const res = await axios.post(`/api/v1/admin/fund`, {
           ...formData,
           userId: id,
+          amount: formData?.depositAmount,
         });
         return res.data;
       },
@@ -138,11 +139,15 @@ const SingleUser = ({ id }) => {
       },
     });
 
-  const handleUpdateStatusWithConfirmation = () => {
+  const handleUpdateStatusWithConfirmation = (updateTpe) => {
     const userConfirmed = window.confirm('Do you wish to submit?');
 
     if (userConfirmed) {
-      handleUpdateStatus();
+      if (updateTpe === 'updateStatus') {
+        handleUpdateStatus();
+      } else {
+        handleDepositAmount();
+      }
     }
   };
 
@@ -237,10 +242,12 @@ const SingleUser = ({ id }) => {
                 </div>
                 <button
                   disabled={submitOrderIsPending}
-                  onClick={handleUpdateStatusWithConfirmation}
+                  onClick={() =>
+                    handleUpdateStatusWithConfirmation('updateStatus')
+                  }
                   className={styles.btn_process}
                 >
-                  {submitOrderIsPending ? 'Updating' : 'Update Account'}
+                  {submitOrderIsPending ? 'Updating...' : 'Update Account'}
                 </button>
               </div>
             )}
@@ -257,8 +264,14 @@ const SingleUser = ({ id }) => {
                     onChange={handleAmountInputChange}
                   />
                 </div>
-                <button className={styles.btn_process}>
-                  Deposit to Account
+                <button
+                  onClick={() => handleUpdateStatusWithConfirmation('FundUser')}
+                  disabled={submitAmountOrderIsPending}
+                  className={styles.btn_process}
+                >
+                  {submitAmountOrderIsPending
+                    ? 'Updating Amount...'
+                    : 'Deposit to Account'}
                 </button>
               </div>
             )}

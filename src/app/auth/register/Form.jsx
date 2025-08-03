@@ -1,14 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './register.module.css';
-
 import { IoEyeOffSharp } from 'react-icons/io5';
 import { IoEyeOutline } from 'react-icons/io5';
-
 import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn, getSession, useSession } from 'next-auth/react';
-import { useQueryState } from 'nuqs';
-
 import axios from 'axios';
 import LogoItem from '@/components/LogoItem/LogoItem';
 import Link from 'next/link';
@@ -31,17 +26,7 @@ const Register = () => {
 
   const params = useSearchParams();
 
-  const searchParams = useSearchParams();
-
-  let callbackUrl = params.get('callbackUrl') || '/user/dashboard';
-
   let referralId = params.get('referralId') || '';
-
-  const { status, data: session } = useSession();
-
-  const [fqui, setFqui] = useQueryState('fqui');
-
-  const [loadingLink, setLoadingLink] = useState(false);
 
   const [formData, setFormData] = useState({
     username: '',
