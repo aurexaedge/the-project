@@ -12,20 +12,26 @@ export const POST = async (res) => {
     });
   }
 
+  const trimmedEmail = email.toLowerCase().trim();
+  const trimmedPassword = password.trim();
+  console.log('pass', password);
   try {
     await db.connect();
 
     const user = await userModel.findOne({
       $or: [
-        { email: email?.toLowerCase() }, // Search by email
-        { username: email?.toLowerCase() }, // Search by username
+        { email: trimmedEmail }, // Search by email
+        { username: trimmedEmail }, // Search by username
       ],
     });
 
     if (!user) {
       throw new Error('Invalid username or password!');
     }
-    const comparePassword = await bcryptjs.compare(password, user.password);
+    const comparePassword = await bcryptjs.compare(
+      trimmedPassword,
+      user.password
+    );
 
     if (!comparePassword) {
       throw new Error('Invalid username or password');

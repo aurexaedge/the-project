@@ -11,6 +11,11 @@ import { IoEyeOutline } from 'react-icons/io5';
 import { useRouter, useSearchParams } from 'next/navigation';
 import CallToAction from '@/components/Buttons/CallToAction/CallToAction';
 import PasswordChecker from '@/app/auth/register/PasswordChecker/PasswordChecker';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Truculenta } from 'next/font/google';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { set } from 'mongoose';
+
 const accountTypes = [
   'Personal (Savings)',
   'Current',
@@ -26,19 +31,23 @@ const CreateUserModal = ({
   openModalForCreateUser,
 }) => {
   const ref = useRef(null);
+  const queryClient = useQueryClient();
 
   const handleModalPopUp = () => {
     setOpenModalForCreateUser(!openModalForCreateUser);
-  };
-
-  const [isLinkCopied, setIsLinkCopied] = useState(false);
-
-  const handleCopyReferralLink = async () => {
-    setIsLinkCopied(true);
-    toast.success('Account number copied');
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLinkCopied(false);
+    setResponseMessage(false);
+    setUserDetails({});
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      transactionPin: '',
+      accountType: '',
+    });
+    setProgress('');
   };
 
   //! the user form
@@ -46,15 +55,11 @@ const CreateUserModal = ({
 
   const params = useSearchParams();
 
-  let referralId = params.get('referralId') || '';
-
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
-    phoneNumber: '',
-    referralId: referralId,
     firstName: '',
     lastName: '',
     transactionPin: '',
@@ -66,6 +71,11 @@ const CreateUserModal = ({
   const [loading, setLoading] = useState(false);
 
   const [showPasword, setShowPasword] = useState(false);
+
+  const [userDetails, setUserDetails] = useState({});
+
+  const [responseMessage, setResponseMessage] = useState(false);
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
 
   const submitFormData = async () => {
     // toast.warning('App is still under construction');
@@ -101,29 +111,26 @@ const CreateUserModal = ({
     ) {
       try {
         setLoading(true);
-        const res = await axios.post('/api/auth/register/onboarding', formData);
+        const res = await axios.post('/api/v1/admin/users', formData);
 
         if (res) {
-          toast.success(res.data.message);
+          toast.success('user created suucessfully');
+          setUserDetails(res.data.message);
+          setResponseMessage(true);
           setLoading(false);
-
-          router.push(
-            `/auth/register/verify-email?quid=${btoa(JSON.stringify(formData))}`
-          );
+          queryClient.invalidateQueries(['fetchUsersForAdmin']);
           setFormData({
             username: '',
             lastName: '',
             email: '',
             password: '',
             confirmPassword: '',
-            phoneNumber: '',
             firstName: '',
             lastName: '',
             transactionPin: '',
             accountType: '',
           });
         }
-        console.clear();
       } catch (error) {
         console.log(error);
         setLoading(false);
@@ -180,6 +187,14 @@ const CreateUserModal = ({
 
   //! ends here
 
+  const handleCopyReferralLink = async () => {
+    setIsLinkCopied(true);
+    toast.success('User detials copied');
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsLinkCopied(false);
+  };
+
   return (
     <>
       <div
@@ -203,7 +218,36 @@ const CreateUserModal = ({
               />
             </div>
 
-            <div className={styles.nin_container}>
+            {responseMessage ? (
+              userDetails && (
+                <div className={styles.copy_container}>
+                  <h3>Kindly copy user details</h3>
+                  <span>This details will only be shown once</span>
+                  <div className={styles.copy_wrapper}>
+                    <div className={styles.copy_card}>
+                      <p>Username:</p>
+                      <p>{userDetails?.username}</p>
+                    </div>
+                    <div className={styles.copy_card}>
+                      <p>Password:</p>
+                      <p>{userDetails?.password}</p>
+                    </div>
+                    <div className={styles.copy_card}>
+                      <p>Transaction Pin:</p>
+                      <p>{userDetails?.transactionPin}</p>
+                    </div>
+                  </div>
+                  <CopyToClipboard
+                    text={`Username: ${userDetails?.username} \n Password: ${userDetails?.password} \n Transaction Pin: ${userDetails?.transactionPin} `}
+                    onCopy={handleCopyReferralLink}
+                  >
+                    <button className={styles.btn_copy}>
+                      {isLinkCopied ? 'Copied' : 'Copy Details'}
+                    </button>
+                  </CopyToClipboard>
+                </div>
+              )
+            ) : (
               <div className={styles.login_wrapper}>
                 <h3>Create account</h3>
                 <p>Set up user account.</p>
@@ -441,7 +485,7 @@ const CreateUserModal = ({
                   action={submitFormData}
                 />
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

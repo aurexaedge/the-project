@@ -32,7 +32,6 @@ export const POST = async (req) => {
     await db.connect();
     const {
       username,
-      phoneNumber,
       email,
       password,
       confirmPassword,
@@ -56,13 +55,17 @@ export const POST = async (req) => {
       return response(409, 'Validation error');
     }
 
+    const trimmedEmail = email.toLowerCase().trim();
+    const trimmedUsername = username.toLowerCase().trim();
+    const trimmedPassword = password.trim();
+
     if (transactionPin.length !== 4) {
       return response(409, 'Transaction pin should be 4 digits');
     }
 
     const [existingUser, existingUsername] = await Promise.all([
-      userModel.findOne({ email: email.trim() }),
-      userModel.findOne({ username: username.trim() }),
+      userModel.findOne({ email: trimmedEmail }),
+      userModel.findOne({ username: trimmedUsername }),
     ]);
 
     if (existingUsername) return response(409, 'Username already exists!');
@@ -72,10 +75,9 @@ export const POST = async (req) => {
       return response(409, 'Passwords must match');
 
     const newUser = await userModel.create({
-      username,
-      phoneNumber,
-      email,
-      password: bcryptjs.hashSync(password),
+      username: trimmedUsername,
+      email: trimmedEmail,
+      password: bcryptjs.hashSync(trimmedPassword),
       superUser: false,
       firstName,
       lastName,
@@ -98,8 +100,12 @@ export const POST = async (req) => {
       routingNumber,
       accountNumber,
     });
-
-    return response(200, 'Registration successful');
+    const userDetails = {
+      username: newUser.username,
+      password: password,
+      transactionPin: newUser.transactionPin,
+    };
+    return response(200, userDetails);
   } catch (error) {
     console.error('POST error:', error);
     return response(500, error.message || 'Something went wrong');
@@ -120,7 +126,7 @@ export const GET = async (req) => {
       .find({})
       .sort({ _id: -1 })
       .select(
-        '-firstName -lastName -updatedAt -password -superUser -accountType -__v -phoneNumber'
+        '-firstName -lastName -updatedAt -password -superUser -accountType -__v'
       );
 
     return NextResponse.json({ message: users }, { status: 200 });

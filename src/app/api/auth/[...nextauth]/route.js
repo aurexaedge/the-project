@@ -59,10 +59,13 @@ export const authOptions = {
       async authorize(credentials) {
         await db.connect();
 
+        const trimmedEmail = credentials?.email.toLowerCase().trim();
+        const trimmedPassword = credentials?.password.trim();
+
         const user = await userModel.findOne({
           $or: [
-            { email: credentials?.email.toLowerCase() }, // Search by email
-            { username: credentials?.email.toLowerCase() }, // Search by username
+            { email: trimmedEmail }, // Search by email
+            { username: trimmedEmail }, // Search by username
           ],
         });
 
@@ -71,7 +74,7 @@ export const authOptions = {
         }
 
         const comparePassword = await bcryptjs.compare(
-          credentials.password,
+          trimmedPassword,
           user.password
         );
 

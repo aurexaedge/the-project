@@ -136,10 +136,6 @@ const Login = () => {
               progressText='Submitting...'
               action={submitFormData}
             />
-            <Link href='/auth/register' className={styles.create_account}>
-              Don&apos;t have an account?{' '}
-              <span className={styles.create_account_inner}>Sign up</span>
-            </Link>
           </div>
         )}
       </div>
