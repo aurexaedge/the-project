@@ -14,7 +14,6 @@ export const POST = async (res) => {
 
   const trimmedEmail = email.toLowerCase().trim();
   const trimmedPassword = password.trim();
-  console.log('pass', password);
   try {
     await db.connect();
 
