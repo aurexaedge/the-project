@@ -84,17 +84,17 @@ const DashboardScreen = ({ referral }) => {
           {data && (
             <p
               className={
-                data?.isAccountLocked
+                data?.lockAccountOnTransfer
                   ? styles.disabled_acount
                   : styles.active_acount
               }
             >
-              {data?.isAccountLocked ? (
+              {data?.lockAccountOnTransfer ? (
                 <MdLock />
               ) : (
                 <IoIosCheckmarkCircleOutline />
               )}
-              {data?.isAccountLocked ? 'Disabled' : 'Active'}
+              {data?.lockAccountOnTransfer ? 'Disabled' : 'Active'}
             </p>
           )}
         </div>
