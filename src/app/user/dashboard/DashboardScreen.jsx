@@ -60,6 +60,7 @@ const DashboardScreen = ({ referral }) => {
   const showPopUp = () => {
     setShowPopup(!showPopup);
   };
+  const mockAccountStatus = true;
 
   return (
     <main>
@@ -79,7 +80,7 @@ const DashboardScreen = ({ referral }) => {
           )}
         </h2>
 
-        <div className={styles.account_status}>
+        {/* <div className={styles.account_status}>
           <p>Account Status:</p>
           {data && (
             <p
@@ -97,6 +98,20 @@ const DashboardScreen = ({ referral }) => {
               {data?.lockAccountOnTransfer ? 'Disabled' : 'Active'}
             </p>
           )}
+        </div> */}
+
+        <div className={styles.account_status}>
+          <p>Account Status:</p>
+          <p
+            className={
+              // styles.disabled_acount
+              styles.active_acount
+            }
+          >
+            {/* <MdLock /> */}
+            <IoIosCheckmarkCircleOutline />
+            Active
+          </p>
         </div>
       </div>
 
